@@ -87,6 +87,7 @@ img {
 }
 input{
 	font-family: 'Microsoft YaHei';
+	outline:none;
 }
 /*单行溢出*/
 .one-txt-cut{
