@@ -1,0 +1,46 @@
+#header {
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid #ee6723;
+  box-shadow: 0 1px 1px 0;
+}
+#header .head {
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+#header .head .login {
+  position: absolute;
+  top: 19px;
+  left: 200px;
+}
+#header .head .login a {
+  display: inline-block;
+  width: 186px;
+  height: 62px;
+  background: url('../images/LOGO.png') no-repeat;
+}
+#header .head .phone {
+  position: relative;
+  line-height: 100px;
+}
+#header .head .phone .phone_t {
+  position: absolute;
+  right: 340px;
+}
+#header .head .phone .phone_t p {
+  color: #B2B2B2;
+  letter-spacing: 1px;
+  font-size: 18px;
+  font-weight: 400;
+}
+#header .head .phone .phone_b {
+  position: absolute;
+  right: 200px;
+}
+#header .head .phone .phone_b span {
+  color: #D0021B ;
+  font-size: 18px;
+  font-weight: 700;
+}
