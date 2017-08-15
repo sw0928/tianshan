@@ -1,3 +1,4 @@
+@color: #f70000;
 // 头部
 #header{
   width: 100%;
@@ -49,16 +50,18 @@
   }
   }
 }
-// 登陆
+// 注册
 #login{
   width:100%;
   background:#F3F3F3;
   overflow: hidden;
   .login_con{
+    position: relative;
     width:400px;
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
+   
     background: #fff;
     .login_top{
       padding-left: 280px;
@@ -68,7 +71,7 @@
         display: inline-block;
       }
       a{
-        color: #F70000;
+        color: @color;
         font-weight: 700;
       }
     }
@@ -85,7 +88,7 @@
     height: 100px;
     margin: 15px auto;
     border-radius: 50% ;
-    background: #f70000;
+    background: @color;
 
   }
   .login_text input {
@@ -108,6 +111,23 @@
   margin-bottom: 20px;
   padding-left: 12px;
   }
+  .protocol {
+      input{
+        position: absolute;
+        left:100px;
+        bottom: 52px;
+      }
+      p{
+       position: absolute;
+        left: 120px;
+        bottom: 50px;
+        color: #666;
+        a{
+          color: @color;
+          font-weight: 700;
+        }
+      }
+  }
   .btn input {
   width: 80px;
   height: 30px;
@@ -115,12 +135,13 @@
   box-shadow: 0 2px 2px 0 rgba(184,173,173,0.50);
   border-radius: 5px;
   margin-bottom: 11px;  
-  color: #f70000;
+  margin-top: 15px;
+  color: @color;
   font-size: 16px;
   font-weight: 700;
   }
   .login_foot{
-  color: #f70000;
+  color: @color;
   text-decoration: underline  ;
   }
 }
