@@ -1,0 +1,195 @@
+@color: #D7474C;
+// 头部
+#head{
+  width: 100%;
+  height: 30px;
+  background: #F5F5F5;
+  border-bottom: 1px solid @color;
+  .content{
+    width: 1200px;
+    height: 30px;
+    position: relative;
+    margin: 0 auto;
+    line-height: 30px;
+    .left{
+      li{
+
+        float: left;
+        a{
+          color: #333;
+          font-weight: 700;
+          padding: 0 20px 0 0;
+          border-right: 2px solid #d3d3d3;
+          
+        }
+      &:nth-child(2){
+        a{
+          padding-left: 20px;
+          border-right: none;
+        }
+            
+          } 
+      }
+
+    }
+    .right{
+      li{
+        float: left;
+        a{
+          color: #333;
+          font-weight: 700;
+          padding: 0 20px ;
+          border-right: 2px solid #d3d3d3;
+        }
+       &:nth-child(3){
+         height: 30px;
+        a{
+          padding: 0;
+          padding-right: 30px;
+          padding-left: 48px;
+          border-right: none;
+          p{
+            color: @color;
+            position: absolute;
+            right: 0;
+            top: 0px;
+          }
+          span{
+            position: absolute;
+            top: 5px;right: 80px;
+            
+            width: 18px;
+            height: 16px;
+            background: url('../images/homepage_icon_cart.png') no-repeat;
+          }
+        }
+            
+          }  
+      }
+    }
+  }
+}
+// 导航
+#nav{
+  width: 100%;
+  background-color: #fff;
+  .content{
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    height: 140px;
+    overflow: hidden;
+
+    .login{
+      margin: 10px 0;
+      a{
+        img{
+          width: 120px;
+        }
+      }
+    }
+    .search{
+      width: 550px;
+      height: 45px;
+      border: 1px solid #D7474C;
+      position: relative;
+      top: 20px;
+      right: 300px;
+      overflow: hidden;
+      .query{
+        box-sizing: border-box;
+        padding-left: 5px;
+        width: 80px;
+        line-height: 45px;
+        background: #f6f6f6;
+        font-family: PingFangSC-Medium;
+        font-size: 12px;
+        font-weight: 700;
+        color: #666;
+        position: absolute;
+        z-index: 99;
+        span{
+          position: absolute;
+          background: url('../images/buypage_choose_down.png') no-repeat;
+          width: 15px;
+          height: 10px;
+          top: 20px;
+          left: 60px;
+          
+        }
+        
+      }
+      input[type="text"]{
+          position: absolute;
+          width: 550px;
+          height: 45px;
+          top: 0;
+          box-sizing: border-box;
+          padding-left: 90px;
+        }
+      input[type="button"]{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 70px;
+        height: 45px;
+        background: #D7474C;
+        z-index: 1;
+      }
+      i{
+        position: absolute;
+        width: 28px;
+        height: 25px;
+        top: 10px;
+        right: 18px;
+        z-index: 99;
+        img{
+          width: 28px;
+          height: 25px;
+        }
+      }
+    }
+    .bar{
+        height: 30px;
+        
+        top: 100px;
+      ul{
+       position: absolute;
+       left: 0;
+       top: 100px;
+        li{
+          height: 40px;
+          box-sizing: border-box;
+          line-height: 40px;
+          float: left;
+          font-family: PingFangSC-Medium;
+          color: #333;
+          font-weight: 600;
+          padding: 0 29px;
+          font-size: 18px;
+          &:nth-child(1){
+            padding-left: 45px;
+            border: 1px solid #B7292E;
+            padding-right: 57px
+            
+          }
+          &:nth-child(2){
+            color: @color
+            
+          }
+          &:nth-child(9){
+           padding-right: 0;
+          }
+          i{
+              background: url('../images/homepage_icon_clas.png') no-repeat;
+              position: absolute;
+              width: 28px;
+              height: 20px;
+              top: 15px;
+              left: 12px;
+            }
+        }
+      }
+    }
+  }
+}
