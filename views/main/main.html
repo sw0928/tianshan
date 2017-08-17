@@ -413,13 +413,16 @@
 <script src="../../assets/js/jquery-1.12.4.js"></script>
 <script>
   $(function () {
-      $('#banner .sidebar_left li').on('click',function () {
-        $('#banner .sidebar .show_banner').css('display','block')
+      // $('#banner .sidebar_left li').on('mouseover',function () {
+      //   $('#banner .sidebar .show_banner').css('display','block')
         
-        })
-      $('#banner .sidebar_left li').on('dblclick',function () { 
-        $('#banner .sidebar .show_banner').css('display','none')
-       })
+      //   })
+      // $('#banner').on( '.sidebar', 'click',function () { 
+      //   $('#banner .sidebar .show_banner').css('display','none')
+      //  })
+      $('#banner .sidebar_left li').on('click',function(){
+        $('#banner .sidebar .show_banner').toggle()
+      })
     })
 </script>
 </html>

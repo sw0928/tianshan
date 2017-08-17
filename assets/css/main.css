@@ -150,13 +150,13 @@
   font-family: PingFangSC-Medium;
   color: #333;
   font-weight: 600;
-  padding: 0 32px;
-  font-size: 17px;
+  padding: 0 30px;
+  font-size: 18px;
 }
 #nav .content .bar ul li:nth-child(1) {
   padding-left: 45px;
   border: 1px solid #B7292E;
-  padding-right: 57px;
+  padding-right: 55px;
   color: #d7474c;
 }
 #nav .content .bar ul li:nth-child(4) {
@@ -186,7 +186,7 @@
 }
 #banner .sidebar ul.sidebar_left {
   height: 100%;
-  width: 212px;
+  width: 211px;
   background: rgba(0, 0, 0, 0.6);
 }
 #banner .sidebar ul.sidebar_left li {
