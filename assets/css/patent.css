@@ -180,9 +180,8 @@
 }
 #shopping .content {
   width: 1200px;
-  height: 600px;
+  height: 580px;
   margin: 0 auto;
-  position: relative;
   overflow: hidden;
 }
 #shopping .content p {
@@ -252,8 +251,7 @@
   color: #333;
 }
 #shopping .content .center .items ul li {
-  cursor: pointer;
-  width: 238px;
+  width: 112px;
   height: 34px;
   float: left;
   box-sizing: border-box;
@@ -287,8 +285,12 @@
 }
 #shopping .content .center .number p span {
   position: absolute;
+  width: 214px;
+  height: 40px;
+  text-align: center;
+  background: url('../images/buypage_plus_minus.png') no-repeat;
   top: -10px;
-  padding-left: 30px;
+  margin-left: 30px;
   font-size: 28px;
 }
 #shopping .content .center .total p {
@@ -381,51 +383,6 @@
   border-radius: 2px;
   color: #fff;
   margin-top: 20px;
-}
-#shopping .content .details {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1200px;
-  height: 450px;
-  box-sizing: border-box;
-  padding: 0 18px;
-  background: #fff;
-  border: 1px solid #d7474c;
-  z-index: 999;
-}
-#shopping .content .details p {
-  font-size: 18px;
-  color: #333333;
-  margin: 30px 0;
-}
-#shopping .content .details ul li {
-  height: 34px;
-  line-height: 34px;
-  border: 1px solid #B2B2B2;
-  border-radius: 2px;
-  color: #666;
-  float: left;
-  font-size: 14px;
-  box-sizing: border-box;
-  padding: 0 10px;
-  margin-right: 12px;
-}
-#shopping .content .details ul li:last-child {
-  margin: 0px;
-}
-#shopping .content .details a {
-  position: absolute;
-  background: #d7474c;
-  width: 145px;
-  height: 40px;
-  color: #fff;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 2px;
-  right: 20px;
-  bottom: 20px;
 }
 #product {
   width: 100%;

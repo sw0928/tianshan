@@ -138,6 +138,7 @@
 }
 #nav .content .bar ul {
   position: absolute;
+  width: 1200px;
   left: 0;
   top: 100px;
 }
@@ -149,15 +150,16 @@
   font-family: PingFangSC-Medium;
   color: #333;
   font-weight: 600;
-  padding: 0 29px;
-  font-size: 18px;
+  padding: 0 32px;
+  font-size: 17px;
 }
 #nav .content .bar ul li:nth-child(1) {
   padding-left: 45px;
   border: 1px solid #B7292E;
   padding-right: 57px;
+  color: #d7474c;
 }
-#nav .content .bar ul li:nth-child(2) {
+#nav .content .bar ul li:nth-child(4) {
   color: #d7474c;
 }
 #nav .content .bar ul li:nth-child(9) {
@@ -174,37 +176,39 @@
 #banner {
   height: 400px;
   width: 100%;
-  background-color: #298bb7;
+  background-color: #D7C;
 }
 #banner .sidebar {
   width: 1200px;
   height: 400px;
   margin: 0 auto;
+  position: relative;
 }
-#banner .sidebar ul {
+#banner .sidebar ul.sidebar_left {
   height: 100%;
   width: 212px;
   background: rgba(0, 0, 0, 0.6);
 }
-#banner .sidebar ul li {
+#banner .sidebar ul.sidebar_left li {
   height: 20%;
   border-bottom: 1px solid #fff;
   font-family: PingFangSC-Regular;
   padding-left: 10px;
   box-sizing: border-box;
   padding-top: 16px;
+  z-index: 999;
   position: relative;
 }
-#banner .sidebar ul li h2 {
+#banner .sidebar ul.sidebar_left li h2 {
   font-weight: 400;
   font-size: 20px;
   color: #fff;
 }
-#banner .sidebar ul li p {
+#banner .sidebar ul.sidebar_left li p {
   font-size: 14px;
   color: #E5E5E5;
 }
-#banner .sidebar ul li i {
+#banner .sidebar ul.sidebar_left li i {
   position: absolute;
   z-index: 9999;
   color: #fff;
@@ -212,6 +216,49 @@
   top: 32px;
   right: 10px;
   height: 25px;
+}
+#banner .sidebar ul.sidebar_left li:hover {
+  border-top: 1px solid #d7474c;
+  border-left: 1px solid #d7474c;
+  border-bottom: 1px solid #d7474c;
+  border-right: 2px solid #fff;
+  background: #fff;
+}
+#banner .sidebar ul.sidebar_left li:hover h2 {
+  color: #d7474c;
+}
+#banner .sidebar ul.sidebar_left li:hover p {
+  color: #d7474c;
+}
+#banner .sidebar ul.sidebar_left li:hover i {
+  color: #d7474c;
+}
+#banner .sidebar .show_banner {
+  display: none;
+  width: 988px;
+  height: 398px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #d7474c;
+}
+#banner .sidebar .show_banner .text1 {
+  border-bottom: 1px solid #E5E5E5;
+  height: 70px;
+  line-height: 70px;
+  margin: 0 15px;
+}
+#banner .sidebar .show_banner .text1 a {
+  font-size: 18px;
+  margin-right: 16px;
+}
+#banner .sidebar .show_banner .text1 a i {
+  font-size: 12px;
+}
+#banner .sidebar .show_banner .text1 a:nth-child(1) {
+  font-size: 20px;
+  color: #000;
 }
 #hot {
   width: 100%;

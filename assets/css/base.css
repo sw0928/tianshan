@@ -44,9 +44,9 @@ body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, d
 	/*font-size: 75px;*/
 /*}*/
 body {
-	font: 12px/1.5 'Microsoft YaHei','宋体', Tahoma, Arial, sans-serif;
+	font: 12px/1.5 'Microsoft YaHei','宋体','PingFangSC-Medium', Tahoma, Arial, sans-serif;
 	color: #555;
-	background-color: #F7F7F7;
+	background-color: #fff;
 }
 em, i {
 	font-style: normal;
