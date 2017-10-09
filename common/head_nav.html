@@ -1,0 +1,238 @@
+<!--头部-->
+<section id="head">
+    <div class="content ">
+        <div class="left fl">
+            <ul>
+                <li>
+                    <a href="">关注山天大蓄</a>
+                </li>
+                <li>
+                    <a href="">商标分类查询</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right fr">
+            <ul>
+                <li ><a href="#/personage" ng-if="phone" ng-bind="phone"></a></li>
+                <li ><a href="#/login" ng-hide="phone">登录</a></li>
+                <li ><a href="#/register" ng-hide="phone" >注册</a></li>
+                <li><a href="#/shop" ng-if="phone"> <span></span>购物车<p >({{cart_num}})</p></a></li>
+            </ul>
+        </div>
+    </div>
+
+</section>
+<!--导航-->
+<section id="nav">
+    <div class="content">
+        <div class="login fl">
+            <a href="#/">
+                <img src="./assets/images/LOGO.png" alt="">
+            </a>
+        </div>
+        <div class="search fr">
+            <div class="query">
+
+                <ul>
+                    <li><select name="">
+                            <option value="1">注册号码</option>
+                            <option value="2">商品名称</option>
+                            <option value="3">申请人</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <input class="text_con" type="text" name="" placeholder="请输入相关内容">
+            <input type="button" name="" value="" >
+            <i ng-click="search()">
+                <img src="./assets/images/homepage_icon_glass.png" alt="">
+            </i>
+        </div>
+        <div class="bar">
+            <ul home-light>
+                <li class="nav_one" show show1>
+                    <a href=""><i></i> 知识产权服务</a>
+                    <ul class="sidebar_left" show3>
+                        <li class="mouse" ng-repeat="item in serve_lists track by $index" show2 >
+                            <h2>{{item.class_desc}}</h2>
+                            <p>{{item.class_name}}</p>
+                            <i ></i>
+                        </li>
+                        <div class="right">
+                            <div class="show_banner">
+                                <div class="show_right">
+                                    <ul >
+                                        <li>
+                                            <a href="#/brand/{{brand[0].goods_id}}/0/2">{{brand[0].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li >
+                                            <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" ng-repeat="item in brand[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/brand/{{brand[1].goods_id}}/26/5">{{brand[1].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/5"  ng-repeat="item in brand[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/brand/{{brand[2].goods_id}}/0/2">{{brand[2].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2"  ng-repeat="item in brand[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="show_banner">
+
+                                <div class="show_right">
+                                    <ul >
+                                        <li>
+                                            <a href="#/patent/{{brand2[0].goods_id}}/0/3">{{brand2[0].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li >
+                                            <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[0].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/patent/{{brand2[1].goods_id}}/0/3">{{brand2[1].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[1].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                            <div class="show_banner">
+                                <div class="show_right">
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand3[0].goods_id}}/0/4">{{brand3[0].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li >
+                                            <a href="#/other/{{brand3[0].goods_id}}/{{item.specification_id}}/4"  ng-repeat="item in brand3[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="show_banner">
+
+                                <div class="show_right">
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand4[0].goods_id}}/0/3">{{brand4[0].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li >
+                                            <a href="#/other/{{brand4[0].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand4[1].goods_id}}/0/3">{{brand4[1].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/other/{{brand4[1].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand4[2].goods_id}}/0/3">{{brand4[2].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/other/{{brand4[2].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="show_banner">
+                                <div class="show_right">
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand5[0].goods_id}}/0/7">{{brand5[0].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li >
+                                            <a href="#/other/{{brand5[0].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand5[1].goods_id}}/0/7">{{brand5[1].goods_name}} <i></i> </a>
+                                        <li>
+                                            <a href="#/other/{{brand5[1].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand5[2].goods_id}}/0/6">{{brand5[2].goods_name}} <i></i> </a>
+                                        <li>
+                                            <a href="#/other/{{brand5[2].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+                                    </ul>
+                                    <ul >
+                                        <li>
+                                            <a href="#/other/{{brand5[3].goods_id}}/0/6">{{brand5[3].goods_name}} <i></i> </a>
+                                        </li>
+                                        <li>
+                                            <a href="#/other/{{brand5[3].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[3].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li class="list_high" >
+                    <a class="sw_one" href="#/">首页</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/brand/1/1/2">商品注册</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/patent/4/38/3">专利申请</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/other/6/83/4">版权登记</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/brand/2/26/5">驰名商标</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/other/13/89/6">高薪认定</a>
+                </li>
+                <li class="list_high">
+                    <a href="http://st.yinhenet.com/">商标评估</a>
+                </li>
+                <li class="list_high">
+                    <a href="#/zhiYan/8">山天智妍</a>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+    </div>
+
+</section>

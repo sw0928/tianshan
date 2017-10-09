@@ -1,0 +1,77 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="refund_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="order_top">
+          <p>退款记录</p>
+          <div class="search fr">
+            <input type="text" name="" class="sw_btn" placeholder="请输入订单号／合同编号">
+            <input type="button" name="" value="" ng-click="search_refund()">
+          </div>
+        </div>
+        <div class="order_nav">
+          <ul ng-click="sw_refund()">
+            <li class="active1" data-text="" value="{{refund_count.all_count}}">全部 ({{refund_count.all_count}})</li>
+            <li data-text="wait_review" value="{{refund_count.wait_review_count}}">审核中({{refund_count.wait_review_count}})</li>
+            <li data-text="end" value="{{refund_count.end_count}}">退款成功 ({{refund_count.end_count}})</li>
+            <li data-text="refuse" value="{{refund_count.refuse_count}}">撤销 ({{refund_count.refuse_count}})</li>
+          </ul>
+        </div>
+        <div class="order_lists">
+          <div class="list_tou">
+            <ul>
+              <li>订单编号</li>
+              <li>合同编号</li>
+              <li>服务类型</li>
+              <li>服务进度</li>
+              <li>费用(元)</li>
+              <li>退款订单状态</li>
+            </ul>
+          </div>
+          <div class="order_not">
+            <span>您还没有订单记录</span>
+          </div>
+          <div class="list_con" ng-repeat="item in refund_list track by $index">
+            <ul>
+              <li class="item1">
+                <p>{{item.order_no}}</p>
+              </li>
+              <li class="item3">
+                <div >
+                  <p>{{item.orderGoodsBean.contract_no}}</p>
+                </div>
+              </li>
+              <li class="item4">
+                <p class="box1" >
+                  {{item.orderGoodsBean.case_type}}<br> {{item.orderGoodsBean.service_type}}
+                </p>
+
+              </li>
+              <li class="item5">
+                <p class="box1">
+                  {{item.orderGoodsBean.service_progress_show}}
+                </p>
+              </li>
+              <li class="item6">
+                <p class="box1" >{{item.orderGoodsBean.price}}</p>
+
+              </li>
+              <li class="item7 ">
+                <a href="">{{item.refund_state_show}}</a> <br>
+
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="order_page" num="{{refund_count.all_count}}" refund-page>
+
+        </div>
+      </div>
+    </div>
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

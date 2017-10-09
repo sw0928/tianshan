@@ -1,0 +1,62 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="discounts_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="record">
+          <p>我的优惠券</p>
+        </div>
+        <div class="record_nav">
+          <ul discounts-lan>
+            <li class="active1" data-text="not_used" value="{{data_num.not_used_count}}" >可使用({{data_num.not_used_count}})</li>
+            <li data-text="already_used" value="{{data_num.already_used_count}}">已使用({{data_num.already_used_count}})</li>
+            <li  data-text="expired" value="{{data_num.expired_count}}">已过期({{data_num.expired_count}})</li>
+          </ul>
+
+        </div>
+        <div class="record_classify">
+          <ul>
+            <li>优惠劵名称</li>
+            <li>可用金额</li>
+            <li>使用范围</li>
+            <li>使用次数</li>
+            <li>有效期</li>
+            <li>状态</li>
+          </ul>
+        </div>
+        
+        <div class="item" ng-repeat="item in used | limitTo : 5 track by $index">
+          <ul>
+            <li>
+              <p>{{item.goods_name}}</p>
+            </li>
+            <li>
+             <p>{{item.coupon_price}}</p>
+            </li>
+            <li>
+             <p>{{item.coupon_name}}</p>
+            </li>
+            <li>
+            <p>{{item.member_coupon_id}}</p>
+            </li>
+            <li>
+            <p>{{item.end_time}} </p>
+            </li>
+             <li>
+            <p>{{item.coupon_type}}</p>
+            </li>
+          </ul>
+        </div>
+
+       
+        <div class="page" data-num="not_used" data-text="{{data_num.not_used_count}}" discounds-page>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--尾部-->
+  <ng-include src="'./common/footer.html'"  ></ng-include>
+

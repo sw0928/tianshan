@@ -1,0 +1,73 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="evaluate_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="record">
+          <p>评价记录</p>
+        </div>
+        <div class="record_nav">
+          <lu>
+            <li class="active1">评价</li>
+          </lu>
+
+        </div>
+        <div class="record_classify">
+          <lu>
+            <li>评价星级</li>
+            <li>评价内容</li>
+            <li>订单编号</li>
+            <li>评价时间</li>
+          </lu>
+        </div>
+        <div class="item" ng-repeat="item in data_ments | limitTo : 5 track by $index">
+          <ul>
+            <li>
+                <div ng-if="item.assessment_star == '5'">
+                  <img src="./assets/images/minepage_eval_icon_star.png"  alt="" >
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                </div>
+                <div ng-if="item.assessment_star == '4'">
+                  <img src="./assets/images/minepage_eval_icon_star.png"  alt="" >
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                </div>
+                <div ng-if="item.assessment_star == '3'">
+                  <img src="./assets/images/minepage_eval_icon_star.png"  alt="" >
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                </div>
+                <div ng-if="item.assessment_star == '2'">
+                  <img src="./assets/images/minepage_eval_icon_star.png"  alt="" >
+                  <img src="./assets/images/minepage_eval_icon_star.png" alt="">
+                </div>
+                <div ng-if="item.assessment_star == '1'">
+                  <img src="./assets/images/minepage_eval_icon_star.png"  alt="" >
+                </div>
+            </li>
+            <li>
+              <p class="txt-cut">{{item.assessment_desc}}</p>
+            </li>
+            <li>
+              <span>{{item.order_no}}</span>
+            </li>
+            <li>
+              <p>{{item.create_time}}</p>
+            </li>
+          </ul>
+        </div>
+        <div class="page" data-num="" evaluate-page>
+
+        </div>
+      </div>
+    </div>
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

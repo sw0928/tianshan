@@ -1,0 +1,36 @@
+
+<!--头部-->
+<div ng-include="'./common/header.html'"></div>
+<!-- 注册 -->
+<section id="register">
+    <div class="register_con">
+        <div class="register_top " style="padding-left: 350px">
+            <p>找回密码</p>
+
+        </div>
+        <div class="register_center">
+            <div class="register_pic clearfix">
+                <img src="./assets/images/login_pic_head.png" alt="">
+            </div>
+            <div class="register_text">
+                <input type="text" placeholder="请输入手机号码" autofocus="true" class="phone1" ng-model="phone">
+            </div>
+            <div class="register_text">
+                <input type="text" placeholder="请输入验证码" readonly="readonly" ng-model="code">
+                <input class="yzm" type="button"  value="验证码" ng-click="gain()" />
+            </div>
+            <div class="passOne">
+                <input type="password" placeholder="重新设置密码" ng-model="password">
+            </div>
+            <div class="passTwo">
+                <input type="password" placeholder="确认密码" ng-model="password2">
+            </div>
+
+            <div class="click">
+                <input type="submit" value="确定" ng-click="register()" style="margin-top: 20px">
+            </div>
+        </div>
+    </div>
+</section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>

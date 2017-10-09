@@ -1,0 +1,150 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="expenses_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="expenses">
+          <p>我的财务</p>
+          <span>起止时间&nbsp; <input type="text" class="datepicker" name="" value="" placeholder="请选择开始时间" date-picker>&nbsp; 至&nbsp;
+          <input type="text" name="" value="" class="datepicker" placeholder="请选择截止时间" date-picker></span>
+        </div>
+        <div class="money">
+          <p>账户余额: <span>¥ 5000.00</span></p> <input type="submit" name="" value="充值">
+        </div>
+        <div class="expenses_nav">
+          <lu>
+            <li class="active1">支出明细</li>
+            <li ng-click="recharge()">充值记录</li>
+          </lu>
+
+        </div>
+        <div class="expenses_classify">
+          <lu>
+            <li>时间</li>
+            <li>支出类型</li>
+            <li>服务信息</li>
+            <li>付款 &nbsp;(元)</li>
+            <li>账户余额 &nbsp;(元)</li>
+          </lu>
+        </div>
+        
+        <div class="item">
+          <ul>
+            <li>
+              <p>2017/07/31</p>
+            </li>
+            <li>
+             <p>类型1</p>
+            </li>
+            <li>
+             <p>标准服务<br>
+                暂不缴纳</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+           
+          </ul>
+        </div>
+        <div class="item">
+          <ul>
+            <li>
+              <p>2017/07/31</p>
+            </li>
+            <li>
+             <p>类型1</p>
+            </li>
+            <li>
+             <p>标准服务<br>
+                暂不缴纳</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+           
+          </ul>
+        </div>
+        <div class="item">
+          <ul>
+            <li>
+              <p>2017/07/31</p>
+            </li>
+            <li>
+             <p>类型1</p>
+            </li>
+            <li>
+             <p>标准服务<br>
+                暂不缴纳</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+           
+          </ul>
+        </div>
+        <div class="item">
+          <ul>
+            <li>
+              <p>2017/07/31</p>
+            </li>
+            <li>
+             <p>类型1</p>
+            </li>
+            <li>
+             <p>标准服务<br>
+                暂不缴纳</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+           
+          </ul>
+        </div>
+        <div class="item">
+          <ul>
+            <li>
+              <p>2017/07/31</p>
+            </li>
+            <li>
+             <p>类型1</p>
+            </li>
+            <li>
+             <p>标准服务<br>
+                暂不缴纳</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+            <li>
+            <p>5000.00</p>
+            </li>
+           
+          </ul>
+        </div>
+        <div class="number">
+          <p>支出总计 : <span>¥ 4880.00</span></p>
+        </div>
+       
+        <div class="page" >
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--尾部-->
+  <ng-include src="'./common/footer.html'"  ></ng-include>
+

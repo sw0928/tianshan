@@ -1,0 +1,78 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+<!--主题-->
+<section id="cause_main">
+    <div class="content">
+        <div ng-include="'./common/left.html'"></div>
+        <div class="center fr">
+            <div class="order_number" data-id="">
+                <p>订单编号 : {{order_cause.order_no}} <i>{{order_cause.order_state_show}}</i> <span>{{order_cause.create_time}}</span></p>
+            </div>
+            <div class="cause_cart">
+                <p>选择退款商品</p>
+            </div>
+            <div class="cause_nav">
+                <ul>
+                    <li>选择商品</li>
+                    <li>案件类型</li>
+                    <li>合同编号</li>
+                    <li>服务类型</li>
+                    <li>服务信息</li>
+                    <li>费用 (元)</li>
+                </ul>
+            </div>
+            <div class="item"  ng-repeat="item in order_cause.orderGoodsBeans track by $index">
+                <ul>
+                    <li>
+                        <input class="check" goods_id="{{item.order_goods_id}}"  type="checkbox" name="" cause-check-one>
+                    </li>
+                    <li >
+                        <p>{{item.case_type}}</p>
+                    </li>
+                    <li>
+                        <p>{{item.contract_no}}</p>
+                    </li>
+                    <li>
+                        <p >{{item.case_type}}<br>{{item.service_type}}</p>
+                    </li>
+                    <li >
+                        <p >{{item.case_type}}<br>{{item.service_type}}</p>
+                    </li>
+                    <li >
+                        <p>{{item.price}}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="cause_cart1">
+                <p>填写退款信息</p>
+            </div>
+            <div class="state">
+                退款说明  : <input type="text" placeholder="（选填）简述退款原因"/>
+            </div>
+            <div class="money">
+                <p>退款金额  :</p> <span>¥ {{order_cause.order_total_price}}</span>
+            </div>
+            <div class="form_file">
+                <p class="text2">产品图上传:</p>
+                <form id="form1" class="form_name" >
+                    <input type="file"   name="file" class="files" value="">
+                    <label for="">上传图片</label>
+                    <img src="" alt="" class="pic1 back">
+                </form>
+            </div>
+            <div class="commit">
+                <input type="button"  value="提交" ng-click="submit()"/>
+                <input type="button" value="取消" onclick="javascript:history.back(-1)"/>
+            </div>
+        </div>
+        <div class="hint">
+            <div class="login_msg">
+                <p ng-bind="msg"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

@@ -1,0 +1,64 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+   <!--主题-->
+  <section id="new_add_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="add">
+          <p>收件信息</p>         
+        </div>
+        <form  method="post" class="form" ng-submit="add()">
+         
+          <div class="name">
+            <label for="">姓名:</label>
+            <input type="text" name="name" value="" ng-model="name">
+          </div>
+           <div class="phone">
+           
+            <label for="">手机号码:</label>
+            <input type="text" name="" value="phone" ng-model="phone">
+          </div>
+         
+          <div class="city">
+            
+            <label for="">所在地区:</label>
+            <select id="province" ng-model="address_province"
+                    ng-options="key.name as key.name for key in provinces"
+                    ng-change="ss()"
+                    >
+              <option value="">--请选择--</option>
+            </select>
+            <select id="city" ng-model="address_city"
+                    ng-change="district()"
+                    ng-options="key.name as key.name for key in city.cityBeans"
+                    >
+              <option value="">--请选择--</option>
+            </select>
+            <select id="district"
+                    ng-model="address_district"
+                    ng-options="key.name as key.name for key in dist.cityBeans"
+                    >
+              <option value="">--请选择--</option>
+            </select>
+            
+          </div>
+          <div class="address">
+           
+            <label for="">具体地址:</label>
+            <input type="text" name="address_detail" value="" placeholder="如小区名称／门牌号等" ng-model="address_detail">
+          </div>
+          <div class="code">
+           
+            <label for="">邮编:</label>
+            <input type="text" name="zip_code" value="" ng-model="zip_code" >
+          </div>
+          <input type="submit" name="" value="提交" ng-click="refer()">
+        </form>
+       
+      </div>
+    </div>
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

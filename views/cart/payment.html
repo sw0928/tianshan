@@ -1,0 +1,147 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="payment_main">
+    <div class="payment_content">
+
+      <div class="center fr">
+        <div class="pay">
+          <p>支付费用</p>
+        </div>
+        <div class="hedui">
+          <p>核对信息</p>
+        </div>
+        <div class="pay_nav">
+          <ul>
+
+            <li>案件类型</li>
+            <li>服务类型</li>
+            <li>案件编号</li>
+            <li>立案时间</li>
+            <li>数量</li>
+            <li>费用合计(元)</li>
+          </ul>
+        </div>
+        <div class="con">
+          <div class="item" data-car="{{item.car_id}}" data-good="{{item.goods_id}}" data-specification="{{item.specification_id}}" ng-repeat="item in order_list track by $index">
+            <ul>
+
+              <li>
+                <p>{{item.case_type}}</p>
+              </li>
+              <li>
+                <p>{{item.service_type}}</p>
+              </li>
+              <li>
+                <p>{{item.case_no}}</p>
+              </li>
+              <li>
+                <p>{{item.create_time}}</p>
+              </li>
+              <li>
+                <p>{{item.goods_num}}</p>
+              </li>
+              <li>
+                <p>{{item.total_price}}</p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="address">
+          <p>收件信息</p>
+        </div>
+        <div class="address_nav">
+          <ul>
+            <li>选择地址</li>
+            <li>姓名</li>
+            <li>收货地址</li>
+            <li>手机号</li>
+            <li>编码</li>
+            <li>操作</li>
+          </ul>
+
+        </div>
+        <div class="aa" data-id="">
+          <div class="address_con"  ng-repeat="item in dizhi_list track by $index">
+            <ul>
+              <li class="btn">
+                <input type="radio" name="name" value=""  address_id="{{item.address_id}}" pay-address-id>
+              </li>
+              <li>
+                <p>{{item.name}}</p>
+              </li>
+              <li>
+                <p>{{item.address_province}}{{item.address_city}}{{item.address_district}}{{item.address_detail}}</p>
+              </li>
+              <li>
+                <p>{{item.phone}}</p>
+              </li>
+              <li>
+                <p>{{item.zip_code}}</p>
+              </li>
+              <li>
+                <a href="#/new_add/{{item.address_id}}" class="select">编辑</a>
+                <a href="" address_id="{{item.address_id}}" class="address_del" address-show >删除</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="add">
+          <a href="#/new_add/0"> <i></i> 新增地址</a>
+        </div>
+        <div class="mode">
+          <p>支付方式</p>
+        </div>
+        <div class="mode_nav">
+          <ul>
+            <li class="active1" pay-tab >支付宝</li>
+            <li pay-tab>微信支付</li>
+            <li pay-tab>网银支付</li>
+            <li pay-tab>转账汇款</li>
+          </ul>
+          <div class="mode_list">
+            <div class="show_pay show">
+              <img src="./assets/images/alipay.png" alt="" ng-click="pay()">
+            </div>
+            <div class="show_pay">
+              <img src="./assets/images/weixinpay.png" alt="" ng-click="pay()">
+            </div>
+            <div class="show_pay">
+              <img src="./assets/images/youzhengbank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/nongyebank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/jianshebank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/guangfabank.png" alt="" ng-click="pay()">
+            </div>
+            <div class="show_pay">
+              <img src="./assets/images/youzhengbank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/nongyebank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/jianshebank.png" alt="" ng-click="pay()">
+              <img src="./assets/images/guangfabank.png" alt="" ng-click="pay()">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+<section id="hintOne">
+  <div class="content">
+    <div class="hint_con">
+      是否确定删除？
+    </div>
+    <button class="hint_btn1" ng-click="hide()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel()">确定</button>
+  </div>
+</section>
+<section id="wx_pay">
+  <div class="content">
+    <div class="hint_con">
+      <img src="" alt=""/>
+    </div>
+  </div>
+</section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

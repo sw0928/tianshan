@@ -1,0 +1,78 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+   <!--主题-->
+  <section id="trademark_up_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="order_number">
+          <p>订单编号 : {{order_data.order_no}} <span>{{order_data.create_time}}</span></p>
+        </div>
+        <div class="upload">
+          <div class="nav">
+            <ul>
+              <li class="active1">商标服务</li>
+              <li ng-click="parentUp()">专利服务</li>
+              <li ng-click="copyrightUp()">版权服务</li>
+            </ul>
+          </div>
+          <div class="data">
+            <h2>商标资料</h2>
+            <div class="index">
+              <p class="text1" for="">公司名称:</p>
+               <input type="text" name="" value="">
+            </div>
+            <div class="form_file">
+              <p class="text2">商标LOGO高清图:</p>
+              <form id="form1" class="form_name" >
+                <input type="file"   name="file" class="files" value="">
+                <label for="">上传LOGO</label>
+                <img src="" alt="" class="pic1 back">
+              </form>
+            </div>
+            
+            <div class="form_file">
+              <p class="text2">营业执照:</p>
+              <form id="form2" class="form_name" >
+                <input type="file"   name="file" class="files" value="">
+                <label for="">上传执照</label>
+                <img src="" alt="" class="pic2 back">
+              </form>
+            </div>
+            <div class="form_file">
+               <p class="text2">委托书上传:</p>
+              <form id="form3" class="form_name" >
+                <input type="file"   name="file" class="files" value="">
+                <label for="">上传文件</label>
+                <img src="" alt="" class="pic3 back">
+              </form>
+              <a href="">委托书模版 点击下载</a>
+            </div> 
+            <div class="form_file">
+              <p class="text2">合同上传:</p>
+              <form id="form4" class="form_name" >
+                <input type="file"   name="file" class="files" value="">
+                <label for="">上传文件</label>
+                <img src="" alt="" class="pic4 back">
+              </form>
+              <a href="">合同模版 点击下载</a>
+            </div>
+            <div class="form_file">
+              <p class="text2">其他材料上传:</p>
+              <form id="form5" class="form_name" >
+                <input type="file"   name="file" class="files" value="">
+                <label for="">上传文件</label>
+                <img src="" alt="" class="pic5 back">
+              </form>
+            </div> 
+             <div class="btn">
+               <input type="submit" name="" value="提交" ng-click="data_up()">
+             </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+   <!--尾部-->
+   <ng-include src="'./common/footer.html'"  ></ng-include>

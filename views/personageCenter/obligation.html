@@ -1,0 +1,109 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="obligation_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="order_top">
+          <p>我的订单</p>
+          <div class="search fr">
+            <input type="text" class="sw_btn" name="" placeholder="请输入订单编号／名称／合同编号">
+            <input type="button" name="" value="" ng-click="search_obligation()">
+          </div>
+        </div>
+        <div class="order_nav">
+          <ul>
+            <li>全部事项 ({{all_data.all_count}})</li>
+            <li class="active1">待付款 ({{all_data.wait_pay_count}})</li>
+            <li ng-click="transact()">待办理 ({{all_data.wait_transact_count}})</li>
+            <li ng-click="finish()">已完成 ({{all_data.end_count + all_data.wait_assessment_count +all_data.transact_over_count}})</li>
+          </ul>
+        </div>
+        <div class="order_lists">
+          <div class="list_tou">
+            <ul>
+              <li>订单号</li>
+              <li>订单名称</li>
+              <li>合同编号</li>
+              <li>服务类型</li>
+              <li>服务进度</li>
+              <li>费用(元)</li>
+              <li>操作</li>
+            </ul>
+          </div>
+
+          <div class="order_not">
+            <span>您还没有订单记录</span>
+          </div>
+          <div class="list_con" ng-repeat="item in data track by $index">
+            <ul>
+              <li class="item1">
+                <p>{{item.order_no}}</p>
+              </li>
+              <li class="item2">
+                <span> {{item.order_name}}</span>
+                <img order_id="{{item.order_id}}" src="./assets/images/orderpage_icon_name.png" alt="" compile-name>
+              </li>
+              <li class="item3">
+                <div ng-repeat="item in item.orderGoodsBeans track by $index">
+                  <p>{{item.contract_no}}</p>
+                </div>
+              </li>
+              <li class="item4">
+                <p class="box1" ng-repeat="item in item.orderGoodsBeans track by $index">
+                  {{item.case_type}}<br> {{item.service_type}}
+                </p>
+
+              </li>
+              <li class="item5">
+                <p class="box1" ng-repeat="item in item.orderGoodsBeans track by $index">
+                  {{item.service_progress_show}}
+                </p>
+              </li>
+              <li class="item6">
+                <p class="box1" ng-repeat="item in item.orderGoodsBeans track by $index">{{item.price}}</p>
+
+              </li>
+              <li class="item7 ">
+                <a href="" class="box1" order_id="{{item.order_id}}" pay-show>立即支付</a> <br>
+                <a href="" order_id="{{item.order_id}}" class="box2" obligation-show>删除订单</a><br>
+                <a href="#/order_detail/{{item.order_id}}">订单详情</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="order_page" page_num="{{all_data.wait_pay_count}}" page>
+
+        </div>
+      </div>
+    </div>
+  </section>
+<section id="hintOne">
+  <div class="content">
+    <div class="hint_con">
+      是否确定删除？
+    </div>
+    <button class="hint_btn1" ng-click="hide_obligation()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel_obligation()">确定</button>
+  </div>
+</section>
+<section id="compile">
+  <div class="content">
+    <div class="hint_con">
+      <input type="text"/>
+    </div>
+    <button class="hint_btn1" ng-click="hide_obligation()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel_compile()">确定</button>
+  </div>
+</section>
+<section id="wx_pay">
+  <div class="content">
+    <div class="hint_con">
+      <img src="" alt=""/>
+    </div>
+  </div>
+</section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+  <script>
+
+  </script>

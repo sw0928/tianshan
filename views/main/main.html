@@ -1,208 +1,279 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <title>Document</title>
-</head>
-
-<body>
-  <!--头部-->
-  <header id="head">
-    <div class="content ">
-      <div class="left fl">
-        <ul>
-          <li>
-            <a href="">关注山天大蓄</a>
-          </li>
-          <li>
-            <a href="">商标分类查询</a>
-          </li>
-        </ul>
-      </div>
-      <div class="right fr">
-        <ul>
-          <li><a href="">登录</a></li>
-          <li><a href="">注册</a></li>
-          <li><a href=""> <span></span>购物车<p>(99)</p></a></li>
-        </ul>
-      </div>
-    </div>
-
-  </header>
-  <!--导航-->
-  <section id="nav">
-    <div class="content">
-      <div class="login fl">
-        <a href="">
-          <img src="../../assets/images/LOGO.png" alt="">
-        </a>
-      </div>
-      <div class="search fr">
-        <div class="query">
-          <span></span>
-          <ul>
-            <li>专利查询</li>
-          </ul>
-        </div>
-        <input type="text" name="" placeholder="输入专利名称">
-        <input type="button" name="" value="">
-        <i>
-          <img src="../../assets/images/search.svg" alt="">
-        </i>
-      </div>
-      <div class="bar">
-        <ul class="">
-          <li>
-            <i></i> 知识产权服务
-          </li>
-          <li>首页</li>
-          <li>商品注册</li>
-          <li>专利申请</li>
-          <li>版权登记</li>
-          <li>驰名商标</li>
-          <li>高薪认定</li>
-          <li>商标评估</li>
-          <li>山天智妍</li>
-        </ul>
-      </div>
-    </div>
-
-  </section>
-  <!--广告-->
-  <section id="banner">
-    <div class="sidebar">
-      <ul class="sidebar_left">
+<!--头部-->
+<section id="head">
+  <div class="content ">
+    <div class="left fl">
+      <ul>
         <li>
-          <h2>专利服务</h2>
-          <p>授权担保</p>
-          <i class="iconfont icon-arrowright"></i>
+          <a href="">关注山天大蓄</a>
         </li>
         <li>
-          <h2>专利服务</h2>
-          <p>授权担保</p>
-          <i class="iconfont icon-arrowright"></i>
-        </li>
-        <li>
-          <h2>专利服务</h2>
-          <p>授权担保</p>
-          <i class="iconfont icon-arrowright"></i>
-        </li>
-        <li>
-          <h2>专利服务</h2>
-          <p>授权担保</p>
-          <i class="iconfont icon-arrowright"></i>
-        </li>
-        <li>
-          <h2>专利服务</h2>
-          <p>授权担保</p>
-          <i class="iconfont icon-arrowright"></i>
+          <a href="">商标分类查询</a>
         </li>
       </ul>
-      <div class="show_banner">
-        <div class="text1"> 
-          <a href="">国内专利<i class="iconfont icon-arrowright"></i></a>
-          <a href="">发明专利</a>
-          <a href="">发明专利</a>
-          <a href="">发明专利</a>
-          <a href="">专利无效宣告</a>
-          <a href="">专利无效宣告</a>
-          <a href="">专利无效宣告</a>
-          <a href="">专利无效宣告</a>    
-        </div>
-        <div class="text1">
+    </div>
+    <div class="right fr">
+      <ul>
 
-            <a href="">国际专利<i class="iconfont icon-arrowright"></i></a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
+        <li ><a href="#/personage" ng-if="phone" ng-bind="phone"></a></li>
+        <li ><a href="#/login" ng-hide="phone">登录</a></li>
+        <li ><a href="#/register" ng-hide="phone" >注册</a></li>
+        <li><a href="#/shop" ng-if="phone"> <span></span>购物车<p >({{cart_num}})</p></a></li>
+      </ul>
+    </div>
+  </div>
 
-        </div>
-        <div class="text1">
-          <a href="">国际专利<i class="iconfont icon-arrowright"></i></a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-        </div>
-        <div class="text1">
-          <a href="">国际专利<i class="iconfont icon-arrowright"></i></a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
-            <a href="">巴黎公约国家申请</a>
+</section>
+<!--导航-->
+<section id="nav">
+  <div class="content">
+    <div class="login fl">
+      <a href="">
+        <img src="./assets/images/LOGO.png" alt="">
+      </a>
+    </div>
+    <div class="search fr">
+      <div class="query">
+        <ul>
+          <li><select name="">
+            <option value="1">注册号码</option>
+            <option value="2">商品名称</option>
+            <option value="3">申请人</option>
+          </select></li>
+        </ul>
+      </div>
+      <input class="text_con" type="text" name="" placeholder="请输入相关内容">
+      <input type="button" name="" value="" >
+      <i ng-click="search()">
+        <img src="./assets/images/homepage_icon_glass.png" alt="">
+      </i>
+    </div>
+    <div class="bar">
+      <ul class="" home-light>
+        <li>
+          <a href=""><i></i> 知识产权服务</a>
+        </li>
+        <li class="list_high">
+          <a class="sw_one" href="#/">首页</a>
+        </li>
+        <li class="list_high">
+          <a href="#/brand/1/1/2">商品注册</a>
+        </li>
+        <li class="list_high">
+          <a href="#/patent/4/38/3">专利申请</a>
+        </li>
+        <li class="list_high">
+          <a href="#/other/6/83/4">版权登记</a>
+        </li>
+        <li class="list_high">
+          <a href="#/brand/2/26/5">驰名商标</a>
+        </li>
+        <li class="list_high">
+          <a href="#/other/13/89/6">高薪认定</a>
+        </li>
+        <li class="list_high">
+          <a href="http://st.yinhenet.com/">商标评估</a>
+        </li>
+        <li class="list_high">
+          <a href="#/zhiYan/8">山天智妍</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</section>
+  <!--广告-->
+  <section id="banner" >
+    <div class="slider">
+      <div class="itmes" >
+        <ul>
+          <li ng-repeat="item in pic track by $index" on-finish-render-filters>
+            <img src="{{item.banner_img}}" alt=""/>
+          </li>
+        </ul>
+      </div>
+      <div class="list" >
+        <i class="current">1</i>
+        <i>2</i>
+        <i>3</i>
+        <i>4</i>
+        <i>5</i>
+      </div>
+      <div class="sidebar" show-banner2>
+        <ul class="sidebar_left">
+          <li ng-repeat="item in serve_lists track by $index" show-banner1 >
+              <h2>{{item.class_desc}}</h2>
+              <p>{{item.class_name}}</p>
+              <i ></i>
+          </li>
+
+        </ul>
+        <div class="right"  >
+          <div class="show_banner">
+            <div class="show_right">
+              <ul >
+                <li>
+                  <a href="#/brand/{{brand[0].goods_id}}/0/2">{{brand[0].goods_name}} <i></i> </a>
+                </li>
+                <li >
+                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" ng-repeat="item in brand[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/brand/{{brand[1].goods_id}}/26/5">{{brand[1].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/5"  ng-repeat="item in brand[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/brand/{{brand[2].goods_id}}/0/2">{{brand[2].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2"  ng-repeat="item in brand[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+          <div class="show_banner">
+
+            <div class="show_right">
+              <ul >
+                <li>
+                  <a href="#/patent/{{brand2[0].goods_id}}/0/3">{{brand2[0].goods_name}} <i></i> </a>
+                </li>
+                <li >
+                  <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[0].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/patent/{{brand2[1].goods_id}}/0/3">{{brand2[1].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[1].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+          <div class="show_banner">
+            <div class="show_right">
+              <ul >
+                <li>
+                  <a href="#/other/{{brand3[0].goods_id}}/0/4">{{brand3[0].goods_name}} <i></i> </a>
+                </li>
+                <li >
+                  <a href="#/other/{{brand3[0].goods_id}}/{{item.specification_id}}/4"  ng-repeat="item in brand3[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+          <div class="show_banner">
+
+            <div class="show_right">
+              <ul >
+                <li>
+                  <a href="#/other/{{brand4[0].goods_id}}/0/3">{{brand4[0].goods_name}} <i></i> </a>
+                </li>
+                <li >
+                  <a href="#/other/{{brand4[0].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/other/{{brand4[1].goods_id}}/0/3">{{brand4[1].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/other/{{brand4[1].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/other/{{brand4[2].goods_id}}/0/3">{{brand4[2].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/other/{{brand4[2].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+          <div class="show_banner">
+            <div class="show_right">
+              <ul >
+                <li>
+                  <a href="#/other/{{brand5[0].goods_id}}/0/7">{{brand5[0].goods_name}} <i></i> </a>
+                </li>
+                <li >
+                  <a href="#/other/{{brand5[0].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/other/{{brand5[1].goods_id}}/0/7">{{brand5[1].goods_name}} <i></i> </a>
+                <li>
+                  <a href="#/other/{{brand5[1].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/other/{{brand5[2].goods_id}}/0/6">{{brand5[2].goods_name}} <i></i> </a>
+                <li>
+                  <a href="#/other/{{brand5[2].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+              </ul>
+              <ul >
+                <li>
+                  <a href="#/other/{{brand5[3].goods_id}}/0/6">{{brand5[3].goods_name}} <i></i> </a>
+                </li>
+                <li>
+                  <a href="#/other/{{brand5[3].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[3].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
         </div>
       </div>
+    </div>
+
+
+
     </div>
   </section>
   <!--热门推荐-->
   <section id="hot">
     <div class="content">
       <h3>热门推荐</h3>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
-      <div class="tags">
-        <i></i>
-        <h2>国内专利申请</h2>
-        <p>专业风险评估，当日送至商标局</p>
-        <span>¥ 680起</span>
-        <img src="../../assets/images/homepage_pic_pre.png" alt="">
-      </div>
+      <a ng-href="{{item.goods_id < '4'?'#/brand/':'#/patent/' }}{{item.goods_id}}/{{item.specification_id}}/{{item.goods_id < '4'? '2':'3'}}"
+         ng-repeat="item in hot_list | limitTo : 8 track by $index" >
+        <div class="tags">
+          <i></i>
+          <h2>{{item.goodsBean.goods_name}}</h2>
+          <p>{{item.recommend_info}}</p>
+          <span>¥ {{item.goodsBean.goods_price}}起</span>
+          <img src="./assets/images/homepage_pic_pre.png" alt="">
+        </div>
+      </a>
+
     </div>
 
   </section>
@@ -210,52 +281,31 @@
   <section id="select">
     <div class="content">
       <h2>为什么选择山天大蓄</h2>
-      <div class="brand">
-        <img src="../../assets/images/homepage_pic_why.png" alt="">
-        <h3>商标，优质低价</h3>
+      <div class="brand" ng-repeat="item in why_check track by $index">
+        <img src="{{item.img}}" alt="">
+        <h3>{{item.title}}</h3>
         <p>
-          极速申报，超期退款 <br> 一对一专属顾问 <br> 10年服务经验的商标代理
+          {{item.content}}
         </p>
       </div>
-      <div class="brand">
-        <img src="../../assets/images/homepage_pic_why.png" alt="">
-        <h3>商标，优质低价</h3>
-        <p>
-          极速申报，超期退款 <br> 一对一专属顾问 <br> 10年服务经验的商标代理
-        </p>
-      </div>
-      <div class="brand">
-        <img src="../../assets/images/homepage_pic_why.png" alt="">
-        <h3>商标，优质低价</h3>
-        <p>
-          极速申报，超期退款 <br> 一对一专属顾问 <br> 10年服务经验的商标代理
-        </p>
-      </div>
-      <div class="brand">
-        <img src="../../assets/images/homepage_pic_why.png" alt="">
-        <h3>商标，优质低价</h3>
-        <p>
-          极速申报，超期退款 <br> 一对一专属顾问 <br> 10年服务经验的商标代理
-        </p>
-      </div>
+
     </div>
 
   </section>
   <!--轮播图-->
-  <section id="carousel">
+  <section id="carousel" carousel>
     <div class="content">
       <h2>专业顾问团队</h2>
       <ul>
-        <li class="major1">
+        <li class="major1"  >
           <div class="pic1">
-
+            <img src="{{counselor[0].head_img}}" alt=""/>
           </div>
           <div class="person">
-            <p>专家A<span>XX领域知名专家</span></p>
+            <p>{{counselor[0].name}}<span>{{counselor[0].position}}</span></p>
             <div class="text">
               <p>
-                从明天起，做一个幸福的人 喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海，春暖花开 从明天起，和 每一个亲人通信 告诉他们我的幸福 那幸福的闪电告诉我的 我将告诉每一个人 给每一条河每一座山取一个温暖的名字 从明天起，做一个幸福的人
-                喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海， 春暖花开
+                {{counselor[0].info}}
               </p>
             </div>
           </div>
@@ -263,62 +313,54 @@
         </li>
         <li class="major2">
           <div class="pic1">
-
+            <img src="{{counselor[1].head_img}}" alt=""/>
           </div>
           <div class="person">
-            <p>专家A</p>
+            <p>{{counselor[1].name}}<span>{{counselor[1].position}}</span></p>
             <div class="text">
               <p>
-                从明天起，做一个幸福的人 喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海，春暖花开 从明天起，和 每一个亲人通信 告诉他们我的幸福 那幸福的闪电告诉我的 我将告诉每一个人 给每一条河每一座山取一个温暖的名字
-
+                {{counselor[1].info}}
               </p>
             </div>
           </div>
-
         </li>
         <li class="major3">
           <div class="pic1">
-
+            <img src="{{counselor[2].head_img}}" alt=""/>
           </div>
           <div class="person">
-            <p>专家A</p>
+            <p>{{counselor[2].name}}<span>{{counselor[2].position}}</span></p>
             <div class="text">
               <p>
-                从明天起，做一个幸福的人 喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海，春暖花开 从明天起，和 每一个亲人通信 告诉他们我的幸福 那幸福的闪电告诉我的 我将告诉每一个人 给每一条河每一座山取一个温暖的名字
-
+                {{counselor[2].info}}
               </p>
             </div>
-          </div>
 
         </li>
         <li class="major4">
           <div class="pic1">
-
+            <img src="{{counselor[3].head_img}}" alt=""/>
           </div>
           <div class="person">
-            <p>专家A</p>
+            <p>{{counselor[3].name}}<span>{{counselor[3].position}}</span></p>
             <div class="text">
               <p>
-                从明天起，做一个幸福的人 喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海，春暖花开 从明天起，和 每一个亲人通信 告诉他们我的幸福 那幸福的闪电告诉我的 我将告诉每一个人 给每一条河每一座山取一个温暖的名字
-
+                {{counselor[3].info}}
               </p>
             </div>
-          </div>
 
         </li>
         <li class="major5">
           <div class="pic1">
-
+            <img src="{{counselor[4].head_img}}" alt=""/>
           </div>
           <div class="person">
-            <p>专家A</p>
+            <p>{{counselor[4].name}}<span>{{counselor[4].position}}</span></p>
             <div class="text">
               <p>
-                从明天起，做一个幸福的人 喂马、劈柴，周游世界 从明天起，关心粮食和蔬菜 我有一所房子，面朝大海，春暖花开 从明天起，和 每一个亲人通信 告诉他们我的幸福 那幸福的闪电告诉我的 我将告诉每一个人 给每一条河每一座山取一个温暖的名字
-
+                {{counselor[4].info}}
               </p>
             </div>
-          </div>
 
         </li>
 
@@ -330,99 +372,13 @@
     <div class="content">
       <h2>合作伙伴</h2>
       <div class="bos">
-        <img src="../../assets/images/homepage_pic_partner.png" alt="">
+        <a href="{{item.url}}" title="{{item.title}}" ng-repeat="item in friend_list track by $index">
+          <img src="{{item.img}}" alt=""/>
+        </a>
       </div>
     </div>
 
   </section>
-   <!--尾部-->
-  <footer id="footer">
-    <div class="foot_top">
-      <div class="links">
-        <p class="fl">友情链接:</p>
-        <ul>
-          <li>
-            <a href="">网站S</a>
-          </li>
-          <li>
-            <a href="">网站S</a>
-          </li>
-          <li>
-            <a href="">网站S</a>
-          </li>
-        </ul>
-      </div>
-      <div class="foot clearfix">
-        <div class="ourselves fl">
-          <ul>
-            <li>
-              <h3>关于我们</h3>
-            </li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-          </ul>
-        </div>
-        <div class="help fl">
-          <ul>
-            <li>
-              <h3>帮助中心</h3>
-            </li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-          </ul>
-        </div>
-        <div class="news fl">
-          <ul>
-            <li>
-              <h3>新闻中心</h3>
-            </li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-          </ul>
-        </div>
-        <div class="service fl">
-          <ul>
-            <li>
-              <h3>专题服务</h3>
-            </li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-          </ul>
-        </div>
-        <div class="code ">
-          <img src="../../assets/images/code.png" alt="">
-          <h3 >400-6236-000</h3>
-          <p>(周一到周日 9:30-22:00)</p>
-        </div>
-      </div>
-    </div>
-    <div class="foot_bottom">
-      <p>Copyright © 2016 shantiandaxu.com 版权所有 北京创遇科技服务有限公司  京ICP备12009436号-1</p>
-      <span>北京市西城区红莲南路57号中国印刷大厦5层 邮编：100055</span>
-    </div>
-  </footer>
-</body>
-<script src="../../assets/js/jquery-1.12.4.js"></script>
-<script>
-  $(function () {
-      // $('#banner .sidebar_left li').on('mouseover',function () {
-      //   $('#banner .sidebar .show_banner').css('display','block')
-        
-      //   })
-      // $('#banner').on( '.sidebar', 'click',function () { 
-      //   $('#banner .sidebar .show_banner').css('display','none')
-      //  })
-      $('#banner .sidebar_left li').on('click',function(){
-        $('#banner .sidebar .show_banner').toggle()
-      })
-    })
-</script>
-</html>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

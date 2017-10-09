@@ -1,0 +1,48 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+   <!--主题-->
+  <section id="company_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="company">
+          <p>公司信息</p>         
+        </div>
+        <div class="company_upload">
+         
+          <div class="data">
+            <form   id="form_name" >
+              <div class="index">
+                <p class="text2">营业执照编号:</p>          
+                <input type="text"   name="" value="">  
+              </div>
+              </form>
+            <form id="form_name2" >
+              <p class="text3">营业执照照片:</p>
+              <div class="form_file">
+
+                <input type="file" class="files"   name="file" value="">
+                <label for="">添加图片</label>
+                <img src="" alt="" class="back pic">
+              </div>
+            </form>
+            <form id="form_name3">
+              <p class="text4">资料相册:</p>
+              <div class="form_file">
+                <input type="file" class="files"   name="file" value="">
+                <label for="">添加图片</label>
+                <img src="" alt="" class="back">
+              </div>
+            </form>
+
+              <div class="btn">
+                <input type="submit" name="" value="提交" ng-click="up_data()">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>

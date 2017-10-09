@@ -1,0 +1,65 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+<!--主题-->
+<section id="invoice_main">
+    <div class="content">
+        <div ng-include="'./common/left.html'"></div>
+        <div class="center fr">
+            <div class="order_number">
+                <p>订单编号 : {{order_one.order_no}} <i>{{order_one.order_state_show}}</i> <span>{{order_one.create_time}}</span></p>
+            </div>
+            <div class="type">
+                <p>发票类型 :</p>
+                <label for="" ><input type="radio" name="type" value="2" ng-model="type"  checked="checked" ng-click="invoice_hide()">  普通发票</label>
+                <label for="" ><input type="radio" name="type" value="3" ng-model="type" ng-click="invoice_show()" >  增值税发票</label>
+            </div>
+            <div class="name">
+                <p>发票抬头 :</p>
+                <label for="" ><input type="radio" class="select1" ng-model="rise" name="name" value="personal"   checked="checked">  个人</label>
+                <label for="" ><input type="radio" class="select2" ng-model="rise" name="name" value="company" >  单位</label>
+            </div>
+            <div class="btn1">
+                <input type="text" value="" ng-model="content" placeholder="单位 : 单位名称 个人 : 个人姓名"/>
+            </div>
+            <div class="tax">
+                <div class="btn2">
+                    <p>单位名称 :</p>
+                    <input type="text" value="" ng-model="content" placeholder="必填"/>
+                </div>
+                <div class="btn3">
+                    <p>纳税人识别码 :</p>
+                    <input type="text" value="" ng-model="taxpayer" placeholder="必填"/>
+                </div>
+                <div class="btn4">
+                    <p>注册地址 :</p>
+                    <input type="text" value="" ng-model="site" placeholder="必填"/>
+                </div>
+                <div class="btn5">
+                    <p>注册电话 :</p>
+                    <input type="text" value="" ng-model="telephone" placeholder="必填"/>
+                </div>
+                <div class="btn6">
+                    <p>开户银行 :</p>
+                    <input type="text" value="" ng-model="bank" placeholder="必填"/>
+                </div>
+                <div class="btn7">
+                    <p>银行账户 :</p>
+                    <input type="text" value="" ng-model="account" placeholder="必填"/>
+                </div>
+            </div>
+            <div class="commit">
+                <input type="button" value="提交" ng-click="invoice()"/>
+                <input type="button" value="取消" onclick="javascript:history.back(-1)"/>
+            </div>
+        </div>
+        <div class="hint">
+            <div class="login_msg">
+                <p ng-bind="msg"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+

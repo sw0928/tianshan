@@ -1,0 +1,68 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主体-->
+  <section id="personage_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="center_top">
+          <div class="pic">
+            <img src="{{head_img}}" alt=""/>
+          </div>
+          <div class="handle">
+            <p >{{real_name}}</p>
+            <a href="#/obligation">
+              <img src="./assets/images/minepage_icon_bepay.png" alt="">
+              <span>待付款</span>
+              <i>{{all_data.wait_pay_count}}件</i>
+            </a>
+            <a href="#/transact">
+              <img src="./assets/images/orderpage_icon_behandle.png" alt="">
+              <span>待处理</span>
+              <i>{{all_data.wait_transact_count}}件</i>
+            </a>
+            <a href="#/finish">
+              <img src="./assets/images/minepage_icon_done.png" alt="">
+              <span>已完成</span>
+              <i>{{all_data.end_count + all_data.wait_assessment_count +all_data.transact_over_count}}件</i>
+            </a>
+            <a href="#/refund">
+              <img src="./assets/images/minepage_icon_refund.png" alt="">
+              <span>已退款</span>
+              <i>{{refund_count.end_count}}件</i>
+            </a>
+          </div>
+        </div>
+        <div class="center_bottom">
+          <p>近期消息</p>
+          <ul>
+            <li ng-repeat="item in news | limitTo : 5 track by $index">
+              <i></i>
+              <a href="{{item.goods_id < '4'?'#/brand/':'#/patent/' }}{{item.goods_id}}/{{item.specification_id}}">{{item.msg_desc}}…</a>
+              <span>{{item.create_time}}</span>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <!--猜你喜欢-->
+  <section id="love">
+    <div class="content">
+      <h3>猜你喜欢</h3>
+      <a ng-href="{{item.goods_id < '4'?'#/brand/':'#/patent/' }}{{item.goods_id}}/{{item.specification_id}}/{{item.goods_id < '4'? '2':'3'}}"
+         ng-repeat="item in hot_list | limitTo : 6 track by $index" >
+        <div class="tags">
+          <i></i>
+          <h2>{{item.goodsBean.goods_name}}</h2>
+          <p>{{item.recommend_info}}</p>
+          <span>¥ {{item.goodsBean.goods_price}}起</span>
+          <img src="./assets/images/homepage_pic_pre.png" alt="">
+        </div>
+      </a>
+    
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>

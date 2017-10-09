@@ -1,0 +1,104 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+   <!--主题-->
+  <section id="account_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="account_top">
+          <h2>账户信息</h2>
+        </div>
+
+        <form id="up_data1" class="form">
+          <div class="img">
+              <div class="image">
+                  <img src="{{head_img}}" alt="">
+              </div>
+                  <label for="">编辑头像</label>
+                  <input type="file" name="file" value="" class="files">
+          </div>
+
+          <div class="phone">
+            <label for="">手机号:</label>
+            <span ng-bind="phone"></span>
+          </div>
+           <div class="name">
+             <i>*</i>
+            <label for="">真实姓名:</label>
+            <input type="text" name="" value="" ng-model="real_name">
+          </div>
+          <div class="email">
+             <i>*</i>
+            <label for="">邮箱:</label>
+            <input type="text" name="" value="" ng-model="mail">
+          </div>
+          <div class="gender">
+             <i>*</i>
+            <label for="">性别:</label>
+            <label for="" ng-model="isSex"><input type="radio" name="sex" value="男" ng-model="isSex" ng-checked="isSex== '男'? true:false" >男</label>
+            <label for=""ng-model="isSex"><input type="radio" name="sex" value="女" ng-model="isSex" ng-checked="isSex== '女'? true:false" >女</label>
+          </div>
+           <div class="birth">
+             <i>*</i>
+            <label for="">出生年月:</label>
+            <input type="text" name="" value="" class="datepicker" ng-model="birthday" date-picker>
+
+          </div>
+          <div class="city">
+             <i>*</i>
+            <label for="">所在地区:</label>
+            <select id="province" ng-model="address_province"
+                   ng-options="province.name as province.name for province in provinces"
+                    ng-change="change()">
+            </select>
+            <select id="city" ng-model="address_city"
+                    ng-change="district()"
+                    ng-options="item.name as item.name for item in city.cityBeans"
+                    >
+            </select>
+            <select id="district"
+                      ng-model="address_district"
+                    ng-options="item.name as item.name for item in dist.cityBeans"
+                    >
+
+            </select>
+            
+          </div>
+          <div class="type">
+             <i>*</i>
+            <label for="">账户类型:</label>
+            <label for="" ng-model="isType"><input type="radio" name="type" ng-model="isType" value="0" ng-checked="isType== '0'? true:false">个人</label>
+            <label for="" ng-model="isType"><input type="radio" name="type" ng-model="isType" value="1" ng-checked="isType== '1'? true:false">单位</label>
+          </div>
+          <div class="company">
+             <i>*</i>
+            <label for="">公司名称:</label>
+            <input type="text" name="" value="" ng-model="address_detail">
+          </div>
+          <div class="job">
+             <i>*</i>
+            <label for="">职务:</label>
+            <input type="text" name="" value="" ng-model="duty">
+          </div>
+          <div class="vocation">
+             <i>*</i>
+            <label for="">所属行业:</label>
+            <select>
+              <option value="">省份</option>
+              <option value="">省份</option>
+              <option value="">省份</option>
+            </select>
+            
+          </div>
+          <input type="submit" class="submit" name="" value="提交" ng-click="up_data()" show-mess>
+        </form>
+      </div>
+     <div class="hint">
+         <div class="login_msg">
+             <p ng-bind="msg"></p>
+         </div>
+     </div>
+    </div>
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>

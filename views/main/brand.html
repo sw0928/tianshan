@@ -1,305 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <link rel="stylesheet" href="../../assets/css/brand.css">
-  <title>Document</title>
-</head>
-
-<body>
-  <!--头部-->
-  <header id="head">
-    <div class="content ">
-      <div class="left fl">
-        <ul>
-          <li>
-            <a href="">关注山天大蓄</a>
-          </li>
-          <li>
-            <a href="">商标分类查询</a>
-          </li>
-        </ul>
-      </div>
-      <div class="right fr">
-        <ul>
-          <li><a href="">登录</a></li>
-          <li><a href="">注册</a></li>
-          <li><a href=""> <span></span>购物车<p>(99)</p></a></li>
-        </ul>
-      </div>
-    </div>
-
-  </header>
-  <!--导航-->
-  <section id="nav">
-    <div class="content">
-      <div class="login fl">
-        <a href="">
-          <img src="../../assets/images/LOGO.png" alt="">
-        </a>
-      </div>
-      <div class="search fr">
-        <div class="query">
-          <span></span>
-          <ul>
-            <li>专利查询</li>
-          </ul>
-        </div>
-        <input type="text" name="" placeholder="输入专利名称">
-        <input type="button" name="" value="">
-        <i>
-          <img src="../../assets/images/search.svg" alt="">
-        </i>
-      </div>
-      <div class="bar">
-        <ul class="">
-          <li>
-            <i></i> 知识产权服务
-          </li>
-          <li>首页</li>
-          <li>商品注册</li>
-          <li>专利申请</li>
-          <li>版权登记</li>
-          <li>驰名商标</li>
-          <li>高薪认定</li>
-          <li>商标评估</li>
-          <li>山天智妍</li>
-        </ul>
-      </div>
-    </div>
-
-  </section>
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
   <!--国内商标-->
-  <section id="shopping">
+  <section id="brand_shopping" show-num hide-num>
     <div class="content ">
-      <p>国内商标 <i class="iconfont icon-arrowright"></i> 国内商标</p>
+      <p>{{brand_list.goods_name}} <i></i> {{brand_list.goods_name}}</p>
       <div class="left fl">
-        图片
+        <img src="{{brand_list.goods_img}}" alt=""/>
       </div>
       <div class="center fl">
-        <h2>国内商标</h2>
-        <div class="case clearfix">
-          <p>案件类型</p>
-          <ul>
-            <li>普通商标注册</li>
-            <li>普通商标注册</li>
-            <li>普通商标注册</li>
-            <li class="case4">普通商标注册</li>
-            <li>普通商标注册</li>
-            <li>商标变更</li>
-            <li>商标变更</li>
+        <h2 goods_price="{{brand_list.goods_price}}" goods_id="{{brand_list.goods_id}}">{{brand_list.goods_name}}</h2>
+        <div class="case clearfix" is_check_id="{{is_check_class}}" >
+          <p selected_id = {{product_case_id}} >案件类型</p>
+          <ul ng-click="child()" >
+            <li ng-repeat="item in case_arr track by $index" case-price good-list is_check_class="{{item.specificationBeans[0].is_check_class}}"  case_id="{{item.specificationBeans[0].specification_id}}" on-selected product-specification >{{item.specificationBeans[0].specification_name}}</li>
           </ul>
         </div>
         <div class="service clearfix">
-          <p>服务类型</p>
-          <ul>
-            <li>标准服务</li>
-            <li>标准服务</li>
+          <p selected_ser_id = {{product_service_id}}>服务类型</p>
+          <ul ng-click="business()">
+            <li ng-repeat="item in service_arr track by $index" list-id service-price is_check_class="" service_id="{{item.specification_id}}" on-service product-service  good-price>{{item.specification_name}}</li>
           </ul>
         </div>
         <div class="items clearfix">
-          <p>项目类别</p>
+          <p>行业分类</p>
           <ul>
-            <li>
+            <li class="genera" ng-click="show_genera()">
               选择大类
-              <img src="../../assets/images/buypage_choose_down.png" alt="">
+              <img src="./assets/images/buypage_choose_down.png" alt="">
             </li>
-            <li>选择大类
-              <img src="../../assets/images/buypage_choose_down.png" alt="">
-            </li>
-            <li>选择大类
-              <img src="../../assets/images/buypage_choose_down.png" alt="">
-            </li>
-            <li>选择大类
-              <img src="../../assets/images/buypage_choose_down.png" alt="">
+            <li class="small" class_id="" title="" ng-click="show_small()">选择小类
+              <img src="./assets/images/buypage_choose_down.png" alt="">
             </li>
           </ul>
         </div>
         <div class="number">
-          <p>数量<span>99</span></p>
+          <p>数量
+            <button reduce class="reduce" >-</button>
+            <span>1</span>
+            <button class="add" add>+</button>
+          </p>
         </div>
         <div class="total">
-          <p>费用合计<span>¥ 1000</span></p>
+          <p>费用合计<span>¥</span><span class="money"  data_case_id="" data_service_id="">{{product_money}}</span></p>
         </div>
-        <div class="btn">
-          <a href="" class="btn1">立即购买</a>
-          <a href="" class="btn2">加入购物车</a>
+        <div class="click">
+          <a href="" class="btn1" specification_id="" order_id="" ng-click="shop()">立即购买</a>
+          <a href="" class="btn2" specification_list=""  ng-click="cart()">加入购物车</a>
         </div>
       </div>
       <div class="right fr">
         <h3>服务者形象展示</h3>
         <div class="figure">
           <div class="images">
-            <img src="" alt="">
+            <img src="{{brand_list.counselorBean.head_img}}" alt="">
           </div>
-          <p>专家A</p>
-          <span>专利资深顾问</span> <br>
-          <i>联系电话：400-6236-000</i>
+          <p>{{brand_list.counselorBean.name}}</p>
+          <span>{{brand_list.counselorBean.position}}</span> <br>
+          <i>联系电话：{{brand_list.counselorBean.phone}}</i>
           <a href="">在线咨询</a>
         </div>
       </div>
       <div class="details">
-        <p>项目大类</p>
+        <p>行业分类</p>
         <ul>
-          <li>1.化学制剂、肥料</li>
-          <li>2.颜料油漆、染料、防腐制品</li>
-          <li>3.日化用品、洗护、香料</li>
-          <li>3.日化用品、洗护、香料</li>
-          <li>4.能源、染料、油脂</li>
-          <li>5.药品、卫生用品、营养品</li>
-          <li>5.零食品</li>
-        
+          <li show-big-class  ng-repeat="item in genera_list track by $index" class_id="{{item.class_id}}">{{item.class_content}}</li>
         </ul>
-        <a href="">确定</a>
+        <a href="" hide-da-lei>确定</a>
+      </div><div class="small_class">
+        <p>{{text}}</p>
+        <ul >
+          <li show-small-class show-small-class-two  ng-repeat="item in small_list track by $index" >{{item.class_content}}</li>
+        </ul>
+        <a href="" hide-xiao-lei>确定</a>
       </div>
     </div>
   </section>
   <!--产品介绍-->
-  <section id="product">
+  <section id="brand_product">
     <div class="content">
       <div class="left fl">
         <h3>相关产品</h3>
         <div class="inland">
           <p>国内商标 <i></i></p>
           <ul>
-            <li>发明专利</li>
-            <li>实用新型</li>
-            <li>外观设计</li>
+            <li ng-repeat="item in brand[0].goodsSpecificationBeans | limitTo : 3 track by $index">
+              <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" >{{item.specificationBeans[0].specification_name}}</a>
+            </li>
           </ul>
         </div>
-         <div class="internation">
+        <div class="internation">
           <p>国际商标 <i></i></p>
           <ul>
-            <li>巴黎公约国家申请</li>
-            <li>欧盟专利申请</li>
-            <li>欧盟专利申请</li>
-            <li>欧盟专利申请</li>
+            <li ng-repeat="item in brand[2].goodsSpecificationBeans | limitTo : 4 track by $index">
+              <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2"  >{{item.specificationBeans[0].specification_name}}</a>
+            </li>
           </ul>
         </div>
-         <div class="difficult">
+        <div class="difficult">
           <p>专利疑难案件 <i></i></p>
           <ul>
-            <li>专利申请复审</li>
-            <li>专利申请复审</li>
-            <li>专利申请复审</li>
-            <li>专利申请复审</li>
+            <li ng-repeat="item in brand2[0].goodsSpecificationBeans | limitTo : 10 track by $index" ng-if="$index > 5">
+              <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" >{{item.specificationBeans[0].specification_name}}</a>
+            </li>
           </ul>
         </div>
       </div>
       <div class="right fr">
         <div class="nav">
-          <ul>
-            <li class="select">业务介绍</li>
-            <li>服务保障</li>
-            <li>公司优势</li>
-            <li>常见问题</li>
-            <li>用户评价</li>
+          <ul correlation>
+            <li  >
+              <a href="" class="select" >业务介绍</a>
+            </li>
+            <li >
+              <a href="" ng-click="demo2()">服务保障</a>
+              </li>
+            <li >
+              <a href="" ng-click="demo3()">公司优势</a>
+              </li>
+            <li >
+              <a href="" ng-click="demo4()">常见问题</a>
+              </li>
+            <li >
+              <a href="" ng-click="demo5()">用户评价</a>
+              </li>
           </ul>
-          
         </div>
-        <div class="introduce">
-          <div class="nav2">
-            <ul>
-              <li class="cur">申请流程</li>
-              <li> 申请费用</li>
-              <li>申请材料</li>
-              <li>服务保障</li>
-              <li>常见问题</li>
+        <div class="business">
+
+        </div>
+        <div id="service" class="service"></div>
+        <div id="advantage" class="advantage"></div>
+        <div id="problem" class="problem">
+          <p>常见问题</p>
+          <div class="list" ng-repeat="item in list_problem track by $index">
+            <span>{{item.question_id}} : {{item.title}}</span>
+            <div class="content">
+              {{item.content}}
+            </div>
+          </div>
+
+        </div>
+        <div id="appraise" class="appraise">
+          <p>用户评价</p>
+          <div class="left_sw">
+            <span>99%</span><i>好评率</i>
+            <div class="sw_con">
+              <p>好评（99.9%）<span></span></p><br/>
+              <p>中评（0.09%）<span></span></p><br/>
+              <p class="cha">差评（0%）<span></span></p>
+            </div>
+          </div>
+          <div class="center_sw">
+            <ul class="aa">
+              <li ng-repeat="item in list_assessment | limitTo : 5 track by $index">
+                <div class="fl pic">
+                  <img src="{{item.memberBean.head_img}}" alt="">
+                </div>
+                <span>{{item.memberBean.real_name}}</span>
+                <div class="fl star">
+                  <div class="top" ng-if="item.assessment_star == '5'">
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <span>{{item.create_time}}</span>
+                  </div>
+                  <div class="top" ng-if="item.assessment_star == '4'">
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <span>{{item.create_time}}</span>
+                  </div>
+                  <div class="top"ng-if="item.assessment_star == '3'">
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <span>{{item.create_time}}</span>
+                  </div>
+                  <div class="top" ng-if="item.assessment_star == '2'">
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <span>{{item.create_time}}</span>
+                  </div>
+                  <div class="top" ng-if="item.assessment_star == '1'">
+                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                    <span>{{item.create_time}}</span>
+                  </div>
+                  <div class="bottom">
+                    {{item.assessment_desc}}
+                  </div>
+                </div>
+              </li>
+
             </ul>
-            
+            <div class="brand_page" data-num=""  brand-page>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
 
   </section>
-   <!--尾部-->
-  <footer id="footer">
-    <div class="foot_top">
-      <div class="links">
-        <p class="fl">友情链接:</p>
-        <ul>
-          <li>
-            <a href="">网站S</a>
-          </li>
-          <li>
-            <a href="">网站S</a>
-          </li>
-          <li>
-            <a href="">网站S</a>
-          </li>
-        </ul>
-      </div>
-      <div class="foot clearfix">
-        <div class="ourselves fl">
-          <ul>
-            <li>
-              <h3>关于我们</h3>
-            </li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-            <li>公司简介</li>
-          </ul>
-        </div>
-        <div class="help fl">
-          <ul>
-            <li>
-              <h3>帮助中心</h3>
-            </li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-          </ul>
-        </div>
-        <div class="news fl">
-          <ul>
-            <li>
-              <h3>新闻中心</h3>
-            </li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-            <li>售后服务</li>
-          </ul>
-        </div>
-        <div class="service fl">
-          <ul>
-            <li>
-              <h3>专题服务</h3>
-            </li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-            <li>加盟合作</li>
-          </ul>
-        </div>
-        <div class="code ">
-          <img src="../../assets/images/code.png" alt="">
-          <h3 >400-6236-000</h3>
-          <p>(周一到周日 9:30-22:00)</p>
-        </div>
-      </div>
-    </div>
-    <div class="foot_bottom">
-      <p>Copyright © 2016 shantiandaxu.com 版权所有 北京创遇科技服务有限公司  京ICP备12009436号-1</p>
-      <span>北京市西城区红莲南路57号中国印刷大厦5层 邮编：100055</span>
-    </div>
-  </footer>
-</body>
-
-</html>
-<script>
-  var lis = document.querySelectorAll('#shopping .center .items li');
-      for (var i = 0; i < lis.length; i++) {
-        lis[i].onclick=function(){
-          document.querySelector('#shopping .details').style.display='block'
-        }
-        
-      }
-</script>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>

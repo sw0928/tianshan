@@ -1,0 +1,93 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="order_detail_main">
+    <div class="content">
+      <div ng-include="'./common/left.html'"></div>
+      <div class="center fr">
+        <div class="order_top">
+          <p>订单编号 : {{order_data.order_no}} <span>{{order_data.create_time}}</span></p>
+          
+        </div>
+       
+        <div class="order_list">
+          <div class="list_tou">
+            <ul>
+              <li>订单名称</li>
+              <li>案件类型</li>
+              <li>合同编号</li>
+              <li>服务类型</li>
+              <li>服务进度</li>
+              <li>费用(元)</li>
+              <li>操作</li>
+            </ul>
+          </div>
+          <div class="list_con" >
+            <ul >
+             
+              <li class="item1">
+                <span> {{order_data.order_name}}</span>
+                <img src="./assets/images/orderpage_icon_name.png" alt="">
+              </li>
+               <li class="item2">
+                <p>{{order_data.orderGoodsBeans[0].case_type}}</p>
+                <p>{{order_data.orderGoodsBeans[0].case_type}}</p>
+              </li>
+              <li class="item3">
+                <div>
+                  <p>{{order_data.orderGoodsBeans[0].contract_no}}</p>
+                  <p>{{order_data.orderGoodsBeans[0].contract_no}}</p>
+                </div>
+              </li>
+              <li class="item4">
+                <p class="box1">
+                  {{order_data.orderGoodsBeans[0].service_type}}<br> {{order_data.orderGoodsBeans[0].service_type}}
+                </p>
+                <p class="box2">
+                  {{order_data.orderGoodsBeans[0].service_type}}<br> {{order_data.orderGoodsBeans[0].service_type}}
+                </p>
+              </li>
+              <li class="item5">
+                <p class="box1">
+                  {{order_data.orderGoodsBeans[0].service_type}}<br> {{order_data.orderGoodsBeans[0].service_type}}
+                </p>
+                <p class="box2">
+                  {{order_data.orderGoodsBeans[0].service_type}}<br> {{order_data.orderGoodsBeans[0].service_type}}
+                </p>
+              </li>
+              <li class="item6">
+                <p class="box1">{{order_data.order_total_price + '.00'}}</p>
+                <p class="box2">{{order_data.order_total_price +'.00'}}</p>
+              </li>
+              <li class="item7 ">
+                <a href="" class="first">申请发票</a> <br>
+                <a href="" class="two">申请退款</a><br>
+                <a href="#/trademark_up/{{order_data.orderGoodsBeans[0].order_goods_id}}/{{order_data.order_id}}/" class="first">完善资料</a>
+              </li>
+            </ul>
+          </div>
+          <div class="detail" >
+            <div class="detail_1">
+              <ul>
+                <li>姓名</li>
+                <li>收货地址</li>
+                <li>手机号</li>
+                <li>邮编</li>
+              </ul>
+            </div>
+            <div class="detail_2" >
+              <ul >
+                <li>{{order_data.name}}</li>
+                <li>{{order_data.province}}{{order_data.city}}{{order_data.district}}{{order_data.detailed_address}}</li>
+                <li>{{order_data.mobile}}</li>
+                <li>{{order_data.zip_code}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </section>
+  <!--尾部-->
+  <ng-include src="'./common/footer.html'"  ></ng-include>

@@ -1,0 +1,28 @@
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+  <!--主题-->
+  <section id="zhiYan">
+    <div class="content">
+      <div class="status" >
+        <ul  >
+          <li ng-click="zhiYanShow()" num="{{item.total}}"  zhi-yan-tab  ng-repeat="item in class_list track by $index" class_id="{{item.class_id}}" >{{item.class_name}}</li>
+        </ul>
+      </div>
+      <div class="news" class_id="{{item.class_id}}" ng-repeat="item in class_data track by $index">
+        <h2>{{item.title}}</h2>
+        <p class="txt-cut">{{item.desc}}</p> <a href="{{item.url}}" >【查看详情】</a>
+
+      </div>
+
+      <div class="page"   zhi-yan-page>
+
+        </div>
+    </div>
+    
+  </section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+<script>
+
+  </script>
+</html>

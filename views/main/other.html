@@ -1,0 +1,172 @@
+
+<!--头部-->
+<div ng-include="'./common/head_nav.html'"></div>
+<!--国内商标-->
+<section id="brand_shopping" >
+    <div class="content ">
+        <p>{{brand_list.goods_name}} <i></i> {{brand_list.goods_name}}</p>
+        <div class="left fl">
+            <img src="{{brand_list.goods_img}}" alt=""/>
+        </div>
+        <div class="center fl">
+            <h2 goods_price="{{brand_list.goods_price}}" goods_id="{{brand_list.goods_id}}">{{brand_list.goods_name}}</h2>
+            <div class="case clearfix" >
+                <p selected_id = {{product_case_id}} >案件类型</p>
+                <ul ng-click="child()" >
+                    <li ng-repeat="item in case_arr track by $index" case-price good-list  case_id="{{item.specificationBeans[0].specification_id}}" on-selected product-specification >{{item.specificationBeans[0].specification_name}}</li>
+                </ul>
+            </div>
+            <!--<div class="service clearfix">-->
+                <!--<p selected_ser_id = {{product_service_id}}>服务类型</p>-->
+                <!--<ul >-->
+                    <!--<li ng-repeat="item in service_arr track by $index" list-id service-price service_id="{{item.specification_id}}" on-service product-service  good-price>{{item.specification_name}}</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <div class="number">
+                <p>数量
+                    <button reduce class="reduce" >-</button>
+                    <span>1</span>
+                    <button class="add" add>+</button>
+                </p>
+            </div>
+            <div class="total">
+                <p>费用合计<span>¥</span><span class="money"  data_case_id="" data_service_id="">{{product_money}}</span></p>
+            </div>
+            <div class="click">
+                <a href="" class="btn1" specification_id="" order_id="" ng-click="shop()">立即购买</a>
+                <a href="" class="btn2" specification_list=""  ng-click="cart()">加入购物车</a>
+            </div>
+        </div>
+        <div class="right fr">
+            <h3>服务者形象展示</h3>
+            <div class="figure">
+                <div class="images">
+                    <img src="{{brand_list.counselorBean.head_img}}" alt="">
+                </div>
+                <p>{{brand_list.counselorBean.name}}</p>
+                <span>{{brand_list.counselorBean.position}}</span> <br>
+                <i>联系电话：{{brand_list.counselorBean.phone}}</i>
+                <a href="">在线咨询</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--产品介绍-->
+<section id="brand_product">
+    <div class="content">
+        <div class="left fl">
+            <h3>相关产品</h3>
+            <div class="inland">
+                <p>国内商标 <i></i></p>
+                <ul>
+                    <li ng-repeat="item in brand[0].goodsSpecificationBeans | limitTo : 3 track by $index">
+                        <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" >{{item.specificationBeans[0].specification_name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="internation">
+                <p>国际商标 <i></i></p>
+                <ul>
+                    <li ng-repeat="item in brand[2].goodsSpecificationBeans | limitTo : 4 track by $index">
+                        <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2"  >{{item.specificationBeans[0].specification_name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="difficult">
+                <p>专利疑难案件 <i></i></p>
+                <ul>
+                    <li ng-repeat="item in brand2[0].goodsSpecificationBeans | limitTo : 10 track by $index" ng-if="$index > 5">
+                        <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" >{{item.specificationBeans[0].specification_name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right fr">
+            <div class="nav">
+                <ul correlation>
+                    <li  >
+                        <a href="" class="select" >业务介绍</a>
+                    </li>
+                    <li >
+                        <a href="" ng-click="demo2()">服务保障</a>
+                    </li>
+                    <li >
+                        <a href="" ng-click="demo3()">公司优势</a>
+                    </li>
+                    <li >
+                        <a href="" ng-click="demo4()">常见问题</a>
+                    </li>
+                    <li >
+                        <a href="" ng-click="demo5()">用户评价</a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="business">
+
+            </div>
+            <div id="service" class="service"></div>
+            <div id="advantage" class="advantage"></div>
+            <div id="problem" class="problem">
+                <p>常见问题</p>
+                <div class="list" ng-repeat="item in list_problem track by $index">
+                    <span>{{item.question_id}} : {{item.title}}</span>
+                    <div class="content">
+                        {{item.content}}
+                    </div>
+                </div>
+
+            </div>
+            <div id="appraise" class="appraise">
+                <p>用户评价</p>
+                <div class="left_sw">
+                    <span>99%</span><i>好评率</i>
+                    <div class="sw_con">
+                        <p>好评（99.9%）<span></span></p><br/>
+                        <p>中评（0.09%）<span></span></p><br/>
+                        <p class="cha">差评（0%）<span></span></p>
+                    </div>
+                </div>
+                <div class="center_sw">
+                    <ul class="aa">
+                        <li ng-repeat="item in list_assessment | limitTo : 5 track by $index">
+                            <div class="fl pic">
+                                <img src="{{item.memberBean.head_img}}" alt="">
+                            </div>
+                            <span>{{item.memberBean.real_name}}</span>
+                            <div class="fl star">
+                                <div class="top">
+                                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                                    <img src="./assets/images/bigstar_selected.png" alt=""/>
+                                    <span>{{item.create_time}}</span>
+                                </div>
+                                <div class="bottom">
+                                    {{item.assessment_desc}}
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                    <div class="brand_page"  brand-page>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!--尾部-->
+<ng-include src="'./common/footer.html'"  ></ng-include>
+<script>
+    var lis = document.querySelectorAll('#shopping .center .items li');
+    for (var i = 0; i < lis.length; i++) {
+        lis[i].onclick=function(){
+            document.querySelector('#shopping .details').style.display='block'
+        }
+
+    }
+</script>
