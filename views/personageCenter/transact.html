@@ -42,7 +42,7 @@
               </li>
               <li class="item2">
                 <span> {{item.order_name}}</span>
-                <img src="./assets/images/orderpage_icon_name.png" alt="">
+                <img order_id="{{item.order_id}}" src="./assets/images/orderpage_icon_name.png" alt="" compile-name>
               </li>
               <li class="item3">
                 <div ng-repeat="item in item.orderGoodsBeans track by $index">
@@ -78,7 +78,14 @@
       </div>
     </div>
   </section>
-
+<section id="compile">
+  <div class="content">
+    <div class="hint_con">
+      <input type="text"/>
+    </div>
+    <button class="hint_btn1" ng-click="hide_obligation()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel_compile()">确定</button>
+  </div>
+</section>
   <!--尾部-->
   <ng-include src="'./common/footer.html'"  ></ng-include>
 

@@ -44,6 +44,13 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         $scope.head_img = $cookieStore.get('head_img')
         $scope.real_name = $cookieStore.get('real_name')
     }
+    $scope.hide_obligation = function () {
+
+        $('#hintOne').slideUp(200);
+        $('#compile').slideUp(200);
+        $('#compile .hint_con input').val('')
+    }
+
     $scope.cookies()
     $scope.search = function () {
         var text_con = $('#nav .content .search .text_con').val();
@@ -623,6 +630,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         ).success(function (data) {
                                 if (data['status'] == 'ok') {
                                     console.log(data)
+                                    $scope.cart_shop()
                                     if(data.data == 'null'){
                                         $location.path("shop");
                                     }else{
@@ -953,6 +961,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         ).success(function (data) {
                                 if (data['status'] == 'ok') {
                                     console.log(data)
+                                    $scope.cart_shop()
                                 } else if (data['status'] == 'error') {
                                     console.log(data)
                                     $scope.Er = data['error'];
@@ -968,6 +977,60 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 });
         }
     }
+     //立即购买
+     $scope.pay_patent = function () {
+            var case_id = $('#patent_shopping .patent_content .total .money').attr('data_case_id')
+            var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
+            var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
+            if(case_id =='' || service_id ==''){
+                console.log('请选择服务类型或者案件类型')
+            }else if(case_id !='' && service_id !=''){
+                var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
+                $http.post(
+                    $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
+                        specification_list:specification_list
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                ).success(function (data) {
+                        if (data['status'] == 'ok') {
+                            console.log(data['data'])
+                            var specification_id = data['data'].specification_id;
+                            var goods_id =  $('#patent_shopping .patent_content h2').attr('goods_id');
+                            var goods_num =  $('#patent_shopping .patent_content .number span').text();
+                            $('#patent_shopping .patent_content .total .money').text(data['data'].price)
+                            $http.post(
+                                $scope.homeUrl + "shoppingCarInterfaces.api?insertShoppingCar", $.param({
+                                    member_id: $cookieStore.get("member_id"),
+                                    token: $cookieStore.get("token"),
+                                    goods_id:goods_id,
+                                    goods_num:goods_num,
+                                    specification_id:specification_id
+                                }),
+                                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                            ).success(function (data) {
+                                    if (data['status'] == 'ok') {
+                                        console.log(data)
+                                        $scope.cart_shop()
+                                        if(data.data == 'null'){
+                                            $location.path("shop");
+                                        }else{
+                                            $location.path("pay/" +data.data);
+                                        }
+                                    } else if (data['status'] == 'error') {
+                                        console.log(data)
+                                        $scope.Er = data['error'];
+                                    }else if(data['error'] == 'token failed'){
+                                        $location.path("login");
+                                    }
+                                });
+                        } else if (data['status'] == 'error') {
+                            console.log(data)
+                            $scope.Er = data['error'];
+                        }else if(data['error'] == 'token failed'){
+                        }
+                    });
+            }
+        }
     //获取下一层菜单列表
     $scope.pet_child = function () {
         $('#patent_shopping .patent_content .case ul li').on('click', function () {
@@ -1219,6 +1282,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             ).success(function (data) {
                                     if (data['status'] == 'ok') {
                                         console.log(data)
+                                        $scope.cart_shop()
                                         if(data.data == 'null'){
                                             $location.path("shop");
                                         }else{
@@ -1450,10 +1514,6 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 $("#wx_pay").css("width",$(document).width());
                                 $('#wx_pay .content .hint_con img').attr('src',data['data'])
                                 $('#wx_pay').slideDown(200);
-                                $timeout(function () {
-                                    $('#wx_pay').slideUp(200);
-                                    $location.path("transact");
-                                },5000)
                             } else if (data['status'] == 'error') {
                                 console.log(data)
                                 $scope.Er = data['error'];
@@ -1741,6 +1801,32 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
               });
       }
         $scope.finish()
+        //编辑昵称
+        $scope.cancel_compile = function () {
+            var order_id = $('#compile .content .hint_btn2').attr('data_id')
+            var name = $('#compile .content .hint_con input').val()
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?updateOrderDetail", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:order_id,
+                    order_name:name
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $('#compile').slideUp(200);
+                        $('#compile .hint_con input').val('')
+                        $scope.finish()
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
         $scope.hide_finish = function () {
 
             $('#hintOne').slideUp(200);
@@ -1842,34 +1928,32 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             });
     }
         $scope.obligation()
-        //立即支付
-        //$scope.pay = function () {
-        //    $('#obligation_main .content .list_con .item7 .box1').on('click', function () {
-        //        var id = $(this).attr('order_id')
-        //        $http.post(
-        //            $scope.homeUrl + "orderInterfaces.api?payRealOrders", $.param({
-        //                token:$cookieStore.get('token'),
-        //                member_id:$cookieStore.get('member_id'),
-        //                order_ids:id,
-        //                channel:'wx_pub_qr'
-        //
-        //            }),
-        //            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-        //        ).success(function (data) {
-        //                if (data['status'] == 'ok') {
-        //                    console.log(data['data'])
-        //
-        //                } else if (data['status'] == 'error') {
-        //                    console.log(data)
-        //                    $scope.Er = data['error'];
-        //                }else if(data['error'] == 'token failed'){
-        //                    $location.path("login");
-        //                }
-        //            });
-        //    })
-        //
-        //}
-
+        //编辑昵称
+        $scope.cancel_compile = function () {
+            var order_id = $('#compile .content .hint_btn2').attr('data_id')
+            var name = $('#compile .content .hint_con input').val()
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?updateOrderDetail", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:order_id,
+                    order_name:name
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $('#compile').slideUp(200);
+                        $('#compile .hint_con input').val('')
+                        $scope.obligation()
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
         $scope.hide_obligation = function () {
 
             $('#hintOne').slideUp(200);
@@ -1898,31 +1982,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     }
                 });
         }
-        //编辑昵称
-        $scope.cancel_compile = function () {
-            var order_id = $('#compile .content .hint_btn2').attr('data_id')
-            var name = $('#compile .content .hint_con input').val()
-            $http.post(
-                $scope.homeUrl + "orderInterfaces.api?updateOrderDetail", $.param({
-                    token:$cookieStore.get('token'),
-                    member_id:$cookieStore.get('member_id'),
-                    order_id:order_id,
-                    order_name:name
-                }),
-                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-            ).success(function (data) {
-                    if (data['status'] == 'ok') {
-                        console.log(data['data'])
-                        $('#compile').slideUp(200);
-                        $scope.obligation()
-                    } else if (data['status'] == 'error') {
-                        console.log(data)
-                        $scope.Er = data['error'];
-                    }else if(data['error'] == 'token failed'){
-                        $location.path("login");
-                    }
-                });
-        }
+
         //搜索订单
         $scope.search_obligation = function () {
             var text = $('#obligation_main .content .search .sw_btn').val()
@@ -1953,24 +2013,53 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 })
     .controller('order_detail', function ($scope, $rootScope, $location,$routeParams, $timeout, $http, $cookies, $cookieStore){
 
-    $http.post(
-        $scope.homeUrl + "orderInterfaces.api?getOneOrderDetail", $.param({
-            token:$cookieStore.get('token'),
-            member_id:$cookieStore.get('member_id'),
-            order_id:$routeParams.order_id
-        }),
-        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-    ).success(function (data) {
-            if (data['status'] == 'ok') {
-                console.log(data['data'])
-                $scope.order_data= data['data']
-            } else if (data['status'] == 'error') {
-                console.log(data)
-                $scope.Er = data['error'];
-            }else if(data['error'] == 'token failed'){
-                $location.path("login");
-            }
-        });
+        $scope.order_detail = function () {
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?getOneOrderDetail", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:$routeParams.order_id
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $scope.order_data= data['data']
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
+        $scope.order_detail()
+        //编辑昵称
+        $scope.cancel_compile = function () {
+            var order_id = $('#compile .content .hint_btn2').attr('data_id')
+            var name = $('#compile .content .hint_con input').val()
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?updateOrderDetail", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:order_id,
+                    order_name:name
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $('#compile').slideUp(200);
+                        $('#compile .hint_con input').val('')
+                        $scope.order_detail()
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
 })
     .controller('personage', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
         $scope.cookies()
@@ -2152,32 +2241,61 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             $location.path("finish")
         }
         $scope.order_num()
-        $http.post(
-            $scope.homeUrl + "orderInterfaces.api?getOrders", $.param({
-                token:$cookieStore.get('token'),
-                member_id:$cookieStore.get('member_id'),
-                order_state:'wait_transact',
-                limit:5
-            }),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-        ).success(function (data) {
-                if (data['status'] == 'ok') {
-                    //console.log(data['data'])
-                    $scope.wait_data = data['data']
-                    if( $scope.wait_data == ''){
-                        $('#transact_main .content .order_not').addClass('show')
-                        $('#transact_main .content .list_tou').addClass('hide')
-                    }else{
-                        $('#transact_main .content .order_not').removeClass('show')
-                        $('#transact_main .content .list_tou').removeClass('hide')
+        $scope.transact = function () {
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?getOrders", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_state:'wait_transact',
+                    limit:5
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        //console.log(data['data'])
+                        $scope.wait_data = data['data']
+                        if( $scope.wait_data == ''){
+                            $('#transact_main .content .order_not').addClass('show')
+                            $('#transact_main .content .list_tou').addClass('hide')
+                        }else{
+                            $('#transact_main .content .order_not').removeClass('show')
+                            $('#transact_main .content .list_tou').removeClass('hide')
+                        }
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
                     }
-                } else if (data['status'] == 'error') {
-                    console.log(data)
-                    $scope.Er = data['error'];
-                }else if(data['error'] == 'token failed'){
-                    $location.path("login");
-                }
-            });
+                });
+        }
+        $scope.transact()
+        //编辑昵称
+        $scope.cancel_compile = function () {
+            var order_id = $('#compile .content .hint_btn2').attr('data_id')
+            var name = $('#compile .content .hint_con input').val()
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?updateOrderDetail", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:order_id,
+                    order_name:name
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $('#compile').slideUp(200);
+                        $('#compile .hint_con input').val('')
+                        $scope.transact()
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
         //搜索订单
         $scope.search_transact = function () {
             var text = $('#transact_main .content .search .sw_btn').val()
@@ -4680,10 +4798,6 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                         $("#wx_pay").css("width",$(document).width());
                                         $('#wx_pay .content .hint_con img').attr('src',data['data'])
                                         $('#wx_pay').slideDown(200);
-                                        $timeout(function () {
-                                            $('#wx_pay').slideUp(200);
-                                            $location.path("obligation");
-                                        },5000)
                                     } else if (data['status'] == 'error') {
                                         console.log(data)
                                         scope.Er = data['error'];
@@ -4707,16 +4821,42 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             link: function(scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function() {
-                        $('#obligation_main .content .list_con .item2 img').on('click', function () {
+                        $(' .content .order_lists .list_con img').on('click', function () {
                             var id = $(this).attr('order_id')
+                            var val = $(this).parent().find('span').text()
+                            console.log(val)
                             $("#compile").css("height",$(document).height());
                             $("#compile").css("width",$(document).width());
                             $('#compile').slideDown(200)
                             $('#compile .content .hint_btn2').attr('data_id',id)
-
+                            $('#compile .hint_con input').val(val)
                         })
                     });
                 }
+
+            }
+
+        }
+    })
+    //编辑昵称
+    .directive('compileNameOne', function ($timeout,$http,$cookieStore,$location) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function(scope, element, attr) {
+                    $timeout(function() {
+                        $('#order_detail_main .content .order_lists .list_con .item1 img').on('click', function () {
+                            var id = $(this).attr('order_id')
+                            var val = $(this).parent().find('span').text()
+                            console.log(val)
+                            $("#compile").css("height",$(document).height());
+                            $("#compile").css("width",$(document).width());
+                            $('#compile').slideDown(200)
+                            $('#compile .content .hint_btn2').attr('data_id',id)
+                            $('#compile .hint_con input').val(val)
+                        })
+                    });
+
 
             }
 
@@ -5199,6 +5339,19 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     $("#cause_main .content .order_number").attr('data-id',b)
 
                 });
+            }
+
+        }
+    })
+//支付二维码隐藏
+    .directive('erWeiMa', function ($http,$cookieStore,$location) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function (scope, elem, attrs) {
+             $('#wx_pay .hint_con img').on('click', function () {
+                 $('#wx_pay').slideUp(200);
+             })
             }
 
         }

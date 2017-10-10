@@ -5453,7 +5453,7 @@
 
       }
 
-      .order_list{
+      .order_lists{
 
         .list_tou{
           width: 946px;
@@ -5485,10 +5485,9 @@
         .list_con{
           width: 946px;
           margin: 0 30px;
+          min-height: 170px;
           border-bottom: 1px solid #999;
           overflow: hidden;
-          height: 186px;
-          line-height: 186px;
           position: relative;
           ul{
             li{
@@ -5518,72 +5517,78 @@
               }
             }
             .item2{
+              position: absolute;
               width: 125px;
-              height: 186px;
-              position: relative;
-              margin-left: 35px;
+              top: 50%;
+              transform: translateY(-50%);
+              margin-left: 110px;
               line-height: 93px;
 
             }
             .item3{
-              margin-left: 35px;
-
+              margin-left: 276px;
               color: #f70000;
-              text-decoration:underline;
+              text-decoration: underline;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
               div{
                 width: 122px;
-                height: 94px;
+                height: 93px;
                 border-bottom: 1px solid #999;
                 p{
-                  // display: inline-block;
-                  // height: 93px;
                   line-height: 93px;
 
+                }
+                &:nth-last-child(1){
+                  border-bottom: none;
                 }
               }
             }
             .item4,.item5,.item6{
               line-height: 20px;
-              position: relative;
-              width: 132px;;
-              border-bottom: 1px solid #999;
+              position: absolute;
+              width: 148px;
+              top: 50%;
+              transform: translateY(-50%);
+
               .box1{
                 display: inline-block;
                 height: 93px;
+                width: 100%;
                 box-sizing: border-box;
-                padding-left: 35px;
+                padding-left: 16px;
                 padding-top: 30px;
+                border-bottom: 1px solid #999;
+                &:nth-last-child(1){
+                  border-bottom: none;
+                }
               }
-              .box2{
-                position: absolute;
-                width: 105px;
-                top: 120px;left:30px;
-              }
-
             }
             .item4{
-
+              margin-left: 398px;
             }
             .item5{
-
+              margin-left: 546px;
               .box1{
-                padding-left: 50px;
+                padding-left: 0px;
               }
-              .box2{
-                left: 40px;
-              }
+              //.box2{
+              //  left: 42px;
+              //}
             }
             .item6{
-              width: 155px;
+              width: 115px;
               line-height: 40px;
+              margin-left: 690px;
               .box1{
-                padding-left: 35px;
+                padding-left: 20px;
               }
 
-              .box2{
-                left: 40px;
-
-              }
+              //.box2{
+              //  left: 18px;
+              //
+              //}
             }
             .item7{
               line-height: 20px;
