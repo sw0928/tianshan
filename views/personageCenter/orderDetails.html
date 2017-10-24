@@ -53,13 +53,13 @@
 
               </li>
               <li class="item7 " ng-if="order_data.order_state == 'wait_pay'">
-                <a href="" class="first" order_id="{{order_data.order_id}}" pay-show>立即支付</a> <br>
-                <a href="" order_id="{{order_data.order_id}}" class="two" obligation-show>删除订单</a><br>
+                <a href="" class="first box1" order_id="{{order_data.order_id}}" pay-show>立即支付</a> <br>
+                <a href="" order_id="{{order_data.order_id}}" class="two box2" obligation-show>删除订单</a><br>
               </li>
               <li class="item7 " ng-if="order_data.order_state == 'wait_transact'">
                 <a href="#/invoice/{{order_data.order_id}}" class="first">申请发票</a> <br>
                 <a href="#/cause/{{order_data.order_id}}" class="two">申请退款</a><br>
-                <a href="#/trademark_up/{{order_data.orderGoodsBeans[0].order_goods_id}}/{{order_data.order_id}}/" class="first">完善资料</a>
+                <a href="" class="first" ng-click="show_aa()">完善资料</a>
               </li>
               <li class="item7 " ng-if="order_data.order_state == 'transact_over'">
                 <a href="#/invoice/{{order_data.order_id}}" class="first">申请发票</a> <br>
@@ -95,16 +95,70 @@
             </div>
           </div>
         </div>
-       
+        <div class="contract" ng-if="order_data.order_state != 'wait_pay'">
+          <p>合同页面展示</p>
+          <div class="contract_con"  ng-repeat="item in order_data.orderGoodsBeans track by $index">
+            <span>{{item.case_type}}&nbsp; <i>合同编号 ： {{item.contract_no}}</i></span>
+            <div class="image">
+              <img ng-if="item.logo_img != ''" src="{{item.logo_img}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.license_img != ''" src="{{item.license_img}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.entrust_book != ''" src="{{item.entrust_book}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.contract != ''" src="{{item.contract}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.others != ''" src="{{item.others}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.secrecy != ''" src="{{item.secrecy}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.product_img != ''" src="{{item.product_img}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.technique != ''" src="{{item.technique}}" alt="" ng-click="show_img($event)"/>
+              <img ng-if="item.works_sample != ''" src="{{item.works_sample}}" alt="" ng-click="show_img($event)"/>
+            </div>
+          </div>
+          <!--<p class="express ">快件内容 <i>XX合同，XX协议，XXXX</i></p>-->
+          <div class="logistics">
+            <span>物流信息</span>
+            <div class="con">
+              <em style="font-size: 24px;color: #f40000" ng-if="expressage.logisticsDetailBeans.length == '0'">暂时无物流信息，尽快为您发货！</em>
+              <em ng-repeat="item in expressage.logisticsDetailBeans track by $index">{{item.logistics_context}}</em>
+
+            </div>
+          </div>
+        </div>
+        <div class="common">
+          <span><i>{{order_data.orderGoodsBeans.length}}</i> 个案件，实付总额： <i>¥ {{order_data.order_total_price}}</i></span>
+        </div>
       </div>
     </div>
   </section>
+<section id="hintOne">
+  <div class="content">
+    <div class="hint_con">
+      是否确定删除？
+    </div>
+    <button class="hint_btn1" ng-click="hide_obligation()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel_obligation()">确定</button>
+  </div>
+</section>
 <section id="compile">
   <div class="content">
     <div class="hint_con">
       <input type="text"/>
     </div>
     <button class="hint_btn1" ng-click="hide_obligation()">取消</button><button class="hint_btn2" data_id="" ng-click="cancel_compile()">确定</button>
+  </div>
+</section>
+<section id="wx_pay">
+  <div class="content">
+    <div class="hint_con">
+      <img src="" alt="" er-wei-ma />
+      <button class="hint_btn1" ng-click="pay_qx()" er-wei-ma>取消支付</button><button class="hint_btn2" data_id="" ng-click="pay_true()">完成支付</button>
+    </div>
+  </div>
+</section>
+<section id="show_image">
+  <div class="content">
+    <img src="" alt="" ng-click="hide_img()"/>
+  </div>
+</section>
+<section id="show_aa">
+  <div class="content">
+    <a href="#/trademark_up/{{item.order_goods_id}}/{{order_data.order_id}}" ng-repeat="item in order_data.orderGoodsBeans track by $index">{{item.case_type}}</a>
   </div>
 </section>
   <!--尾部-->

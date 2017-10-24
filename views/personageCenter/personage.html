@@ -50,16 +50,16 @@
   </section>
   <!--猜你喜欢-->
   <section id="love">
-    <div class="content">
+    <div class="content" scroll-top-three>
       <h3>猜你喜欢</h3>
       <a ng-href="{{item.goods_id < '4'?'#/brand/':'#/patent/' }}{{item.goods_id}}/{{item.specification_id}}/{{item.goods_id < '4'? '2':'3'}}"
          ng-repeat="item in hot_list | limitTo : 6 track by $index" >
         <div class="tags">
           <i></i>
-          <h2>{{item.goodsBean.goods_name}}</h2>
+          <h2>{{item.specificationBeans[0].specification_name}}</h2>
           <p>{{item.recommend_info}}</p>
-          <span>¥ {{item.goodsBean.goods_price}}起</span>
-          <img src="./assets/images/homepage_pic_pre.png" alt="">
+          <span>¥ {{item.price}}起</span>
+          <img src="{{item.goodsBean.goods_img}}" alt="">
         </div>
       </a>
     

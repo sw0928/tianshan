@@ -1,5 +1,6 @@
-app.controller('home', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
+app.controller('home', function ($scope, $rootScope, $location,$interval, $timeout, $http, $cookies, $cookieStore){
      $scope.homeUrl= 'http://stdx.tstweiguanjia.com/';
+    //获取订单各个状态
     $scope.order_num  = function () {
         $http.post(
             $scope.homeUrl + "orderInterfaces.api?getOrdersCount", $.param({
@@ -19,6 +20,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 }
             });
     }
+    //获取购物车数量
     $scope.cart_shop = function () {
         $http.post(
             $scope.homeUrl + "shoppingCarInterfaces.api?getMemberShoppingCarCount", $.param({
@@ -38,23 +40,29 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 }
             });
     }
+    //获取cookies内容
     $scope.cookies = function () {
         $scope.phone = $cookieStore.get('phone')
         $scope.cart_num = $cookieStore.get('cart_num')
         $scope.head_img = $cookieStore.get('head_img')
         $scope.real_name = $cookieStore.get('real_name')
     }
+    $scope.cookies()
+    //隐藏弹出框
     $scope.hide_obligation = function () {
 
         $('#hintOne').slideUp(200);
         $('#compile').slideUp(200);
         $('#compile .hint_con input').val('')
     }
-
-    $scope.cookies()
+    //切换搜索框内容
+    $scope.show_search = function () {
+        $('#nav .content .search .query ul').toggleClass('show');
+    }
+    //搜索商标查询内容
     $scope.search = function () {
         var text_con = $('#nav .content .search .text_con').val();
-        var search_id = $('#nav .content .search .query select').val()
+        var search_id = $('#nav .content .search .query .chaxun').data('id')
 
        if(text_con != '' || search_id != ''){
            $http.post(
@@ -64,21 +72,99 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                }),
                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
            ).success(function (data) {
+                   console.log(data)
                    if (data['status'] == 'ok') {
-                       console.log(data)
-                       $location.path('search')
+                       $('#nav .content .search .query .chaxun').text('商标查询')
+                       $scope.search_lists = data['data']
+                       $location.path('search/'+data.total +'/'+search_id + '/' + text_con )
+                       $cookieStore.put('key',text_con)
+                       $cookieStore.put('type',search_id)
+                       if(data['data'] == ''){
+                           $timeout(function(){
+                               $('#search_main .content .hint ').slideDown(500);
+                               $('#search_main .content .hint .login_msg p').text('尚未有此类商标！')
+                               $timeout(function () {
+                                   $('#search_main .content .hint ').slideUp(500);
+                               },2000)
+                           },2000)
+                       }
+
+
                    } else if (data['status'] == 'error') {
                        console.log(data)
-                       $scope.Er = data['error'];
+                       $timeout(function(){
+                           $('#search_main .content .hint ').slideDown(500);
+                           $('#search_main .content .hint .login_msg p').text('尚未有此类商标！')
+                           $timeout(function () {
+                               $('#search_main .content .hint ').slideUp(500);
+                           },2000)
+                       },2000)
                    }else if(data['error'] == 'token failed'){
                    }
                });
+       }else{
+
        }
 
+    }
+    //获取业务介绍，服务保障，公司优势页面
+    $scope.acquire = function (url) {
+        $http.post(
+            $scope.homeUrl + "othersInterfaces.api?getHtmlDesc", $.param({
+                url: url
+            }),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+        ).success(function (data) {
+                if (data['status'] == 'ok') {
+                    if(url =='service_info'){
+                        $scope.service_info = data['data']
+                    }else if(url == 'service_good'){
+                        $scope.service_good = data['data']
+                    }else if(url == 'service_guarantee'){
+                        $scope.service_guarantee = data['data']
+                    }
+                    console.log($scope.service_info)
+                    console.log($scope.service_good)
+                    console.log($scope.service_guarantee)
+                } else if (data['status'] == 'error') {
+                    console.log(data)
+                    $scope.Er = data['error'];
+                }else if(data['error'] == 'token failed'){
+                }
+            });
     }
     $scope.personage = function () {
         $location.path('personage')
     }
+    //注销登陆
+    $scope.logout = function () {
+        $cookies.remove('phone')
+        $cookies.remove('cart_num')
+        $cookies.remove('password')
+        $cookies.remove('token')
+        $cookies.remove('member_id')
+        $cookies.remove('real_name')
+        $cookies.remove('head_img')
+        $location.path("login");
+    }
+    //友情链接
+    $http.post(
+        $scope.homeUrl + "goodsInterfaces.api?getRecommendLinkList", $.param({
+
+        }),
+        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+    ).success(function (data) {
+            if (data['status'] == 'ok') {
+                //console.log(data['data'])
+                $scope.firend_list = data['data']
+            } else if (data['status'] == 'error') {
+                console.log(data)
+                $scope.Er = data['error'];
+            }else if(data['error'] == 'token failed'){
+
+            }
+        });
+
     //获取商品分类列表
     $http.post(
         $scope.homeUrl + "goodsInterfaces.api?getGoodsClasss", $.param({
@@ -123,7 +209,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             if (data['status'] == 'ok') {
                 //console.log(data['data'])
                 $scope.brand = data['data']
-                $scope.brand_arr = [];
+                //$scope.brand_arr = [];
             } else if (data['status'] == 'error') {
                 console.log(data)
                 $scope.Er = data['error'];
@@ -156,7 +242,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
     ).success(function (data) {
             if (data['status'] == 'ok') {
-
+    //console.log(data['data'])
                 $scope.brand3 = data['data']
             } else if (data['status'] == 'error') {
                 console.log(data)
@@ -188,7 +274,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
     ).success(function (data) {
             if (data['status'] == 'ok') {
-
+                //console.log(data['data'])
                 $scope.brand5 = data['data']
             } else if (data['status'] == 'error') {
                 console.log(data)
@@ -203,6 +289,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
     ).success(function (data) {
             if (data['status'] == 'ok') {
+                //console.log(data['data'])
                 $scope.hot_list = data['data']
             } else if (data['status'] == 'error') {
                 console.log(data)
@@ -244,6 +331,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
     $http.post(
         $scope.homeUrl + "othersInterfaces.api?getFriendList", $.param({
+            limit:100
         }),
         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
     ).success(function (data) {
@@ -284,7 +372,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     $cookieStore.put('real_name',real_name)
                     $cookieStore.put('token',token)
                     $cookieStore.put('member_id',member_id)
-                    $scope.msg = "登陆成功"
+                    $scope.msg = "登录成功"
                     $('#login .login_msg').addClass('show')
                     $timeout(function(){
                         $location.path("/");
@@ -342,7 +430,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         }
     })
 
-            $scope.gain = function () {
+    $scope.gain = function () {
                     $http.post(
                         $scope.homeUrl + "othersInterfaces.api?sendCode", $.param({
                             mobile: $scope.phone,
@@ -471,7 +559,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     $scope.specification_id='';
     $scope.goods_id = '';
     $scope.service_arr=[];
-    //$scope.num = 1;
+    $scope.cookies()
     //获取规格详情
         if($routeParams.goods_id == '1'){
             $('#brand_shopping .content .number').addClass('hide')
@@ -489,13 +577,13 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     //console.log(data['data'])
                     $scope.product_case_id = data['data'].specificationBeans[0].specification_id
                     $scope.is_check_class = data['data'].specificationBeans[0].is_check_class
-                    console.log(data['data'].specification_list)
                     if($scope.is_check_class == '1'){
                         $('#brand_shopping .content .items').addClass('show')
                     }else{
                         $('#brand_shopping .content .items').removeClass('show')
                     }
                     $scope.product_service_id = data['data'].specificationBeans[1].specification_id
+
                     $scope.product_money = data['data'].price;
                     $('#brand_shopping .content .click .btn2').attr('specification_list',data['data'].specification_list)
                     $http.post(
@@ -540,22 +628,28 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             }else if(data['error'] == 'token failed'){
             }
         });
+
     //加入购物车
     $scope.cart = function () {
         var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
         var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
         if(case_id =='' || service_id ==''){
-            console.log('请选择服务类型或者案件类型')
+            $('#brand_shopping .content .hint ').slideDown(500);
+            $('#brand_shopping .content .hint .login_msg p').text('请选择服务类型或者案件类型')
+            $timeout(function () {
+                $('#brand_shopping .content .hint ').slideUp(500);
+            },2000)
         }else if(case_id !='' && service_id !=''){
             var specification_list = $('#brand_shopping .center .click .btn2').attr('specification_list')
             $http.post(
                 $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                    specification_list:specification_list
+                    specification_list:specification_list,
+                    goods_id:$routeParams.goods_id
                 }),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
                     if (data['status'] == 'ok') {
-                       console.log(data['data'])
+
                         var specification_id = data['data'].specification_id;
                         var goods_id =  $('#brand_shopping .center h2').attr('goods_id');
                         var big_class = $('#brand_shopping .center .items .genera').text()
@@ -575,12 +669,16 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                         ).success(function (data) {
                                 if (data['status'] == 'ok') {
-                                     console.log(data)
+
                                     $('#brand_shopping .center .click .btn1').attr('order_id',data.data)
+                                    $('#brand_shopping .content .hint ').slideDown(500);
+                                    $('#brand_shopping .content .hint .login_msg p').text('加入购物车成功')
+                                    $timeout(function () {
+                                        $('#brand_shopping .content .hint ').slideUp(500);
+                                    },2000)
                                     $scope.cart_shop()
                                 } else if (data['status'] == 'error') {
                                     console.log(data)
-                                    $scope.Er = data['error'];
                                 }else if(data['error'] == 'token failed'){
                                     $location.path("login");
                                 }
@@ -599,17 +697,22 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
 
         if(case_id =='' || service_id ==''){
-            console.log('请选择服务类型或者案件类型')
+            $('#brand_shopping .content .hint ').slideDown(500);
+            $('#brand_shopping .content .hint .login_msg p').text('请选择服务类型或者案件类型')
+            $timeout(function () {
+                $('#brand_shopping .content .hint ').slideUp(500);
+            },2000)
         }else if(case_id !='' && service_id !=''){
             var specification_list = $('#brand_shopping .center .click .btn2').attr('specification_list')
             $http.post(
                 $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                    specification_list:specification_list
+                    specification_list:specification_list,
+                    goods_id:$routeParams.goods_id
                 }),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
                     if (data['status'] == 'ok') {
-                        console.log(data['data'])
+
                         var specification_id = data['data'].specification_id;
                         var goods_id =  $('#brand_shopping .center h2').attr('goods_id');
                         var big_class = $('#brand_shopping .center .items .genera').text()
@@ -629,7 +732,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                         ).success(function (data) {
                                 if (data['status'] == 'ok') {
-                                    console.log(data)
+
                                     $scope.cart_shop()
                                     if(data.data == 'null'){
                                         $location.path("shop");
@@ -665,7 +768,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 $scope.brand_list = data['data']
                 console.log($scope.brand_list)
                 $scope.case_arr = [];
-
+                $scope.acquire($scope.brand_list.service_info)
                 var arr1=[];
                 for(var i =0; i<=$scope.brand_list.goodsSpecificationBeans.length-1; i++ ){
                     arr1.push($scope.brand_list.goodsSpecificationBeans[i])
@@ -700,41 +803,70 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             }else if(data['error'] == 'token failed'){
             }
         });
-
     //获取下一层菜单列表
-    $scope.child = function () {
-        $('#brand_shopping .content .case ul li').on('click', function () {
-            $(this).addClass('current').siblings().removeClass('current')
-            var is_check_class = $(this).attr('is_check_class')
+    $scope.child = function ($event) {
+
+        $($event.target).addClass('current').siblings().removeClass('current')
+            var is_check_class = $($event.target).attr('is_check_class')
+            var case_id = $($event.target).attr('case_id')
+            $('#brand_shopping .content .total .money').attr('data_case_id',case_id)
             if(is_check_class == '1'){
                 $('#brand_shopping .content .items').addClass('show')
             }else{
                 $('#brand_shopping .content .items').removeClass('show')
             }
-            $('#brand_shopping .content .service ul li').removeClass('current')
+            //$('#brand_shopping .content .service ul li').removeClass('current')
             $('#brand_shopping .content .total .money').attr('data_service_id','')
-            $('#brand_shopping .content .total .money').text('0')
+            //$('#brand_shopping .content .total .money').text('0')
             $('#brand_shopping .content .number span').text('1');
             $scope.goods_id = $('#brand_shopping .center h2').attr('goods_id')
-            $scope.specification_id =  $(this).attr('case_id')
+            //$scope.specification_id =  $(this).attr('case_id')
 
             $http.post(
                 $scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
-                    specification_id: $scope.specification_id,
+                    specification_id: case_id,
                     parent_id: $scope.goods_id
                 }),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
                     if (data['status'] == 'ok') {
-                        //console.log(data['data'])
+                        //console.log(data['data'][0].specification_id)
+                        var id = data['data'][0].specification_id
                         $scope.service_arr = data['data']
+                        $('#brand_shopping .content .service ul li').eq(0).addClass('current')
+                        var arr =[]
+                        arr[0] = $('#brand_shopping .content .total .money').attr('data_case_id');
+                        arr[1] =  id
+                        arr = arr.join()
+                        $('#brand_shopping .content .click .btn2').attr('specification_list',arr)
+                        $('#brand_shopping .content .total .money').attr('data_service_id',id);
+                        //console.log(arr)
+                        $timeout(function () {
+                            if(arr[0] !='' && arr[1] !=''){
+                                $http.post(
+                                    $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
+                                        specification_list:arr,
+                                        goods_id:$routeParams.goods_id
+                                    }),
+                                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                                ).success(function (data) {
+                                        if (data['status'] == 'ok') {
+                                            $('#brand_shopping .center .total .money').text(data['data'].price)
+                                        } else if (data['status'] == 'error') {
+                                            console.log(data)
+                                            $scope.Er = data['error'];
+                                        }else if(data['error'] == 'token failed'){
+                                        }
+                                    });
+                            }
+                        })
                     } else if (data['status'] == 'error') {
                         console.log(data)
                         $scope.Er = data['error'];
                     }else if(data['error'] == 'token failed'){
                     }
                 });
-        })
+
 
     }
         //显示大类
@@ -768,7 +900,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
                     if (data['status'] == 'ok') {
-                        console.log(data['data'])
+                        //console.log(data['data'])
                         $scope.small_list = data['data']
                     } else if (data['status'] == 'error') {
                         console.log(data)
@@ -786,7 +918,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_problem= data['data']
                 } else if (data['status'] == 'error') {
                     console.log(data)
@@ -802,7 +934,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_assessment= data['data']
                     $('#brand_product .content .center_sw .brand_page').attr('data-num',data.total)
                 } else if (data['status'] == 'error') {
@@ -829,6 +961,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     $scope.specification_id='';
     $scope.goods_id = '';
     $scope.pet_service_arr=[];
+    $scope.cookies()
     //获取规格详情
     if($routeParams.specification_id != '0'){
         $http.post(
@@ -841,7 +974,33 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     $scope.product_case_id = data['data'].specificationBeans[0].specification_id
                     $scope.product_service_id = data['data'].specificationBeans[1].specification_id
                     $scope.product_money = data['data'].price;
+                    console.log(data['data'])
                     $('#patent_shopping .patent_content .click .btn2').attr('specification_list',data['data'].specification_list)
+                    $http.post(
+                        $scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
+                            specification_id: $scope.product_service_id,
+                            parent_id: $routeParams.goods_id
+                        }),
+                        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                    ).success(function (data) {
+                            if (data['status'] == 'ok') {
+                                //console.log(data['data'])
+                                $scope.pet_contribute_arr = data['data']
+                                if($scope.pet_contribute_arr != ''){
+                                    $('#patent_shopping .patent_content .items').addClass('show')
+                                    $timeout(function () {
+                                        $('#patent_shopping .patent_content .items ul li').eq(0).addClass('current')
+                                    },500)
+
+                                }else{
+                                    $('#patent_shopping .patent_content .items').removeClass('show')
+                                }
+                            } else if (data['status'] == 'error') {
+                                console.log(data)
+                                $scope.Er = data['error'];
+                            }else if(data['error'] == 'token failed'){
+                            }
+                        });
                     $http.post(
                         $scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
                             specification_id: $scope.product_case_id,
@@ -934,17 +1093,22 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
         var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
         if(case_id =='' || service_id ==''){
-            console.log('请选择服务类型或者案件类型')
+            $('#patent_shopping .patent_content .hint ').slideDown(500);
+            $('#patent_shopping .patent_content .hint .login_msg p').text('请选择服务类型或者案件类型或者关税缴纳')
+            $timeout(function () {
+                $('#patent_shopping .patent_content .hint ').slideUp(500);
+            },2000)
         }else if(case_id !='' && service_id !=''){
             var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
             $http.post(
                 $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                    specification_list:specification_list
+                    specification_list:specification_list,
+                    goods_id:$routeParams.goods_id
                 }),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
                     if (data['status'] == 'ok') {
-                        console.log(data['data'])
+                        //console.log(data['data'])
                         var specification_id = data['data'].specification_id;
                         var goods_id =  $('#patent_shopping .patent_content h2').attr('goods_id');
                         var goods_num =  $('#patent_shopping .patent_content .number span').text();
@@ -960,7 +1124,12 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                         ).success(function (data) {
                                 if (data['status'] == 'ok') {
-                                    console.log(data)
+                                    //console.log(data)
+                                    $('#patent_shopping .patent_content .hint ').slideDown(500);
+                                    $('#patent_shopping .patent_content .hint .login_msg p').text('加入购物车成功')
+                                    $timeout(function () {
+                                        $('#patent_shopping .patent_content .hint ').slideUp(500);
+                                    },2000)
                                     $scope.cart_shop()
                                 } else if (data['status'] == 'error') {
                                     console.log(data)
@@ -983,17 +1152,22 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
             var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
             if(case_id =='' || service_id ==''){
-                console.log('请选择服务类型或者案件类型')
+                $('#patent_shopping .patent_content .hint ').slideDown(500);
+                $('#patent_shopping .patent_content .hint .login_msg p').text('请选择服务类型或者案件类型或者关税缴纳')
+                $timeout(function () {
+                    $('#patent_shopping .patent_content .hint ').slideUp(500);
+                },2000)
             }else if(case_id !='' && service_id !=''){
                 var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
                 $http.post(
                     $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                        specification_list:specification_list
+                        specification_list:specification_list,
+                        goods_id:$routeParams.goods_id
                     }),
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                 ).success(function (data) {
                         if (data['status'] == 'ok') {
-                            console.log(data['data'])
+                            //console.log(data['data'])
                             var specification_id = data['data'].specification_id;
                             var goods_id =  $('#patent_shopping .patent_content h2').attr('goods_id');
                             var goods_num =  $('#patent_shopping .patent_content .number span').text();
@@ -1009,7 +1183,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                             ).success(function (data) {
                                     if (data['status'] == 'ok') {
-                                        console.log(data)
+                                        //console.log(data)
                                         $scope.cart_shop()
                                         if(data.data == 'null'){
                                             $location.path("shop");
@@ -1032,11 +1206,19 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             }
         }
     //获取下一层菜单列表
-    $scope.pet_child = function () {
-        $('#patent_shopping .patent_content .case ul li').on('click', function () {
+    $scope.pet_child = function ($event) {
+            $($event.target).addClass('current').siblings().removeClass('current')
             $scope.goods_id = $('#patent_shopping .patent_content h2').attr('goods_id')
-            $scope.specification_id =  $(this).attr('case_id')
-
+            $scope.specification_id =  $($event.target).attr('case_id')
+            $('#brand_shopping .content .total .money').attr('data_case_id', $scope.specification_id)
+            $('#patent_shopping .patent_content .click .btn2').attr('specification_list', $scope.specification_id)
+            $('#patent_shopping .patent_content .service ul li').removeClass('current')
+            $('#patent_shopping .patent_content .items ul li').removeClass('current')
+            $('#patent_shopping .patent_content .items').removeClass('show')
+            $('#patent_shopping .patent_content .total .money').attr('data_service_id','')
+            $('#patent_shopping .patent_content .total .money').attr('data_contribute_id','')
+            $('#patent_shopping .patent_content .total .money').text('0')
+            $('#patent_shopping .patent_content .number span').text('1')
             $http.post(
                 $scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
                     specification_id: $scope.specification_id,
@@ -1052,14 +1234,14 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     }else if(data['error'] == 'token failed'){
                     }
                 });
-        })
 
     }
+
      //获取下下一层缴纳菜单列表
-     $scope.contribute= function () {
-            $('#patent_shopping .patent_content .service ul li').on('click', function () {
+     $scope.contribute= function ($event) {
+
                 $scope.goods_id = $('#patent_shopping .patent_content h2').attr('goods_id')
-                $scope.specification_id =  $(this).attr('service_id')
+                $scope.specification_id =  $($event.target).attr('service_id')
 
                 $http.post(
                     $scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
@@ -1069,10 +1251,12 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                 ).success(function (data) {
                         if (data['status'] == 'ok') {
-                            console.log(data['data'])
+                            //console.log(data['data'])
                             $scope.pet_contribute_arr = data['data']
                             if($scope.pet_contribute_arr != ''){
                                 $('#patent_shopping .patent_content .items').addClass('show')
+                                //$('#patent_shopping .patent_content .items ul li').eq(0).addClass('current')
+
                             }else{
                                 $('#patent_shopping .patent_content .items').removeClass('show')
                             }
@@ -1082,9 +1266,10 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         }else if(data['error'] == 'token failed'){
                         }
                     });
-            })
+
 
         }
+
         //常见问题
         $http.post(
             $scope.homeUrl + "goodsInterfaces.api?getGoodsQuestions", $.param({
@@ -1093,7 +1278,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_problem= data['data']
                 } else if (data['status'] == 'error') {
                     console.log(data)
@@ -1109,7 +1294,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_assessment= data['data']
                     $('#patent_product .content .appraise .patent_page').attr('data-num',data.total)
                 } else if (data['status'] == 'error') {
@@ -1136,6 +1321,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         $scope.specification_id='';
         $scope.goods_id = '';
         $scope.pet_service_arr=[];
+        $scope.cookies()
         //获取规格详情
         if($routeParams.specification_id != '0'){
             $http.post(
@@ -1148,6 +1334,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
                         $scope.product_case_id = data['data'].specificationBeans[0].specification_id
                         $scope.product_money = data['data'].price;
+
                     } else if (data['status'] == 'error') {
                         console.log(data)
                         $scope.Er = data['error'];
@@ -1206,17 +1393,22 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
             //var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
             if(case_id ==''){
-                console.log('请选择服务类型或者案件类型')
+                $('#brand_shopping .content .hint ').slideDown(500);
+                $('#brand_shopping .content .hint .login_msg p').text('请选择服务类型或者案件类型')
+                $timeout(function () {
+                    $('#brand_shopping .content .hint ').slideUp(500);
+                },2000)
             }else if(case_id !='' ){
                 var specification_list = $('#brand_shopping .center .total .money').attr('data_case_id')
                 $http.post(
                     $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                        specification_list:specification_list
+                        specification_list:specification_list,
+                        goods_id:$routeParams.goods_id
                     }),
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                 ).success(function (data) {
                         if (data['status'] == 'ok') {
-                            console.log(data['data'])
+                            //console.log(data['data'])
                             var specification_id = data['data'].specification_id;
                             var goods_id =  $('#brand_shopping .center h2').attr('goods_id');
                             var goods_num =  $('#brand_shopping .center .number span').text();
@@ -1232,8 +1424,13 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                             ).success(function (data) {
                                     if (data['status'] == 'ok') {
-                                        console.log(data)
+                                        //console.log(data)
                                         $('#brand_shopping .center .click .btn1').attr('order_id',data.data)
+                                        $('#brand_shopping .content .hint ').slideDown(500);
+                                        $('#brand_shopping .content .hint .login_msg p').text('加入购物车成功')
+                                        $timeout(function () {
+                                            $('#brand_shopping .content .hint ').slideUp(500);
+                                        },2000)
                                         $scope.cart_shop()
                                     } else if (data['status'] == 'error') {
                                         console.log(data)
@@ -1255,12 +1452,17 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
             //var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
             if(case_id ==''){
-                console.log('请选择服务类型或者案件类型')
+                $('#brand_shopping .content .hint ').slideDown(500);
+                $('#brand_shopping .content .hint .login_msg p').text('请选择服务类型或者案件类型')
+                $timeout(function () {
+                    $('#brand_shopping .content .hint ').slideUp(500);
+                },2000)
             }else if(case_id !=''){
                 var specification_list = $('#brand_shopping .center .total .money').attr('data_case_id')
                 $http.post(
                     $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                        specification_list:specification_list
+                        specification_list:specification_list,
+                        goods_id:$routeParams.goods_id
                     }),
                     {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                 ).success(function (data) {
@@ -1281,7 +1483,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                             ).success(function (data) {
                                     if (data['status'] == 'ok') {
-                                        console.log(data)
+                                        //console.log(data)
                                         $scope.cart_shop()
                                         if(data.data == 'null'){
                                             $location.path("shop");
@@ -1306,39 +1508,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
 
         }
-        //获取下一层菜单列表
-        $scope.child = function () {
-            $('#brand_shopping .content .case ul li').on('click', function () {
-                $(this).addClass('current').siblings().removeClass('current')
-                $('#brand_shopping .content .number span').text('1');
-                $scope.goods_id = $('#brand_shopping .center h2').attr('goods_id')
-                $scope.specification_id =  $(this).attr('case_id')
-                var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
 
-                $timeout(function () {
-                    if(case_id !=''){
-                        var specification_list = $('#brand_shopping .center .total .money').attr('data_case_id')
-                        $http.post(
-                            $scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                                specification_list:specification_list
-                            }),
-                            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-                        ).success(function (data) {
-                                if (data['status'] == 'ok') {
-                                    $('#brand_shopping .center .total .money').text(data['data'].price)
-                                } else if (data['status'] == 'error') {
-                                    console.log(data)
-                                    $scope.Er = data['error'];
-                                }else if(data['error'] == 'token failed'){
-                                }
-                            });
-                    }else{
-
-                    }
-                })
-            })
-
-        }
         //常见问题
         $http.post(
             $scope.homeUrl + "goodsInterfaces.api?getGoodsQuestions", $.param({
@@ -1347,7 +1517,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_problem= data['data']
                 } else if (data['status'] == 'error') {
                     console.log(data)
@@ -1363,7 +1533,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    console.log(data['data'])
+                    //console.log(data['data'])
                     $scope.list_assessment= data['data']
                 } else if (data['status'] == 'error') {
                     console.log(data)
@@ -1385,16 +1555,96 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             $('html,body').animate({scrollTop:$('#appraise').offset().top},1000)
         }
     })
-    .controller('search', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
-
+    .controller('search', function ($scope, $rootScope, $location,$routeParams, $timeout, $http, $cookies, $cookieStore){
+        $scope.cookies()
+        $scope.key = $cookieStore.get('key')
+        $scope.type = $cookieStore.get('type')
+        $http.post(
+            $scope.homeUrl + "goodsInterfaces.api?searchTrademark", $.param({
+                key: $scope.key,
+                type: $scope.type
+            }),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+        ).success(function (data) {
+                if (data['status'] == 'ok') {
+                    $scope.search_lists = data['data']
+                    $location.path('search/'+data.total +'/'+ $scope.type + '/' + $scope.key )
+                } else if (data['status'] == 'error') {
+                    console.log(data)
+                    $scope.Er = data['error'];
+                }else if(data['error'] == 'token failed'){
+                }
+            });
 })
     .controller('message', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
+        $scope.cookies()
+        $scope.mess_name = ''
+        $scope.mess_phone = ''
+        $scope.mess_domain = ''
+        $scope.mess_intro = ''
+        $scope.mess_qq = ''
 
+        $scope.mess_jj = function () {
+            if($scope.mess_domain != '' &&  $scope.mess_intro != '' &&  $scope.mess_qq != ''){
+                $http.post(
+                    $scope.homeUrl + "goodsInterfaces.api?insertPatentMessage", $.param({
+                        member_id:$cookieStore.get('member_id'),
+                        name:$scope.mess_name,
+                        phone:$scope.mess_phone,
+                        industry: $scope.mess_domain,
+                        profile:$scope.mess_intro,
+                        contact_way:$scope.mess_qq
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                ).success(function (data) {
+                        if (data['status'] == 'ok') {
+                            $('#message_main .content .hint ').slideDown(500);
+                            $('#message_main .content  .hint .login_msg p').text('提交成功')
+                            $timeout(function () {
+                                $('#message_main .content  .hint ').slideUp(500);
+                                history.back(-1);
+                            },2000)
+
+                        } else if (data['status'] == 'error') {
+                            console.log(data)
+                            $scope.Er = data['error'];
+                        }else if(data['error'] == 'token failed'){
+                            $location.path("login");
+                        }
+                    });
+            }else{
+                $('#message_main .content .hint ').slideDown(500);
+                $('#message_main .content .hint .login_msg p').text('填写完整哦！')
+                $timeout(function () {
+                    $('#message_main .content .hint ').slideUp(500);
+                },2000)
+            }
+
+        }
     })
-    .controller('trademarkDetail', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
+    .controller('trademarkDetail', function ($scope, $rootScope,$routeParams, $location, $timeout, $http, $cookies, $cookieStore){
+        $scope.cookies()
+        $http.post(
+            $scope.homeUrl + "goodsInterfaces.api?getTrademarkInfo", $.param({
+                cls:$routeParams.cls,
+                key:$routeParams.key,
 
+
+            }),
+            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+        ).success(function (data) {
+                if (data['status'] == 'ok') {
+                    console.log(data['data'])
+                    $scope.trad_detail = data['data']
+                } else if (data['status'] == 'error') {
+                    console.log(data)
+                    $scope.Er = data['error'];
+                }else if(data['error'] == 'token failed'){
+                }
+            });
 })
     .controller('pay', function ($scope, $rootScope,$routeParams, $location, $timeout, $http, $cookies, $cookieStore){
+        $scope.cookies()
     $http.post(
         $scope.homeUrl + "shoppingCarInterfaces.api?getShoppingCarsWithCarids", $.param({
             ids:$routeParams.order_id,
@@ -1439,6 +1689,14 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
         $('#hintOne').slideUp(500);
     }
+        //完成支付
+     $scope.pay_true = function () {
+         $('#wx_pay').slideUp(200);
+         $timeout(function () {
+             $location.path("transact");
+         })
+
+     }
     //删除地址
     $scope.cancel = function () {
         var address_id = $('#hintOne .content .hint_btn2').attr('data_id')
@@ -1464,6 +1722,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     //形成订单号
     $scope.pay = function () {
         var address_id = $('#payment_main .payment_content .aa ').attr('data-id')
+
         var json={}
         json.member_id=$cookieStore.get('member_id');
         json.address_id=address_id;
@@ -1487,53 +1746,63 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         });
         json.orderBeans.push(main)
         json = JSON.stringify(json)
-        $http.post(
-            $scope.homeUrl + "orderInterfaces.api?insertOrder", $.param({
-                token:$cookieStore.get('token'),
-                member_id:$cookieStore.get('member_id'),
-                json:json
+        if(address_id != ''){
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?insertOrder", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    json:json
 
-            }),
-            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-        ).success(function (data) {
-                if (data['status'] == 'ok') {
-                    console.log(data['data'])
-                    $http.post(
-                        $scope.homeUrl + "orderInterfaces.api?payRealOrders", $.param({
-                            token:$cookieStore.get('token'),
-                            member_id:$cookieStore.get('member_id'),
-                            order_ids:data['data'].order_ids,
-                            channel:'wx_pub_qr'
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        console.log(data['data'])
+                        $http.post(
+                            $scope.homeUrl + "orderInterfaces.api?payRealOrders", $.param({
+                                token:$cookieStore.get('token'),
+                                member_id:$cookieStore.get('member_id'),
+                                order_ids:data['data'].order_ids,
+                                channel:'wx_pub_qr'
 
-                        }),
-                        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-                    ).success(function (data) {
-                            if (data['status'] == 'ok') {
-                                console.log(data['data'])
-                                $("#wx_pay").css("height",$(document).height());
-                                $("#wx_pay").css("width",$(document).width());
-                                $('#wx_pay .content .hint_con img').attr('src',data['data'])
-                                $('#wx_pay').slideDown(200);
-                            } else if (data['status'] == 'error') {
-                                console.log(data)
-                                $scope.Er = data['error'];
-                            }else if(data['error'] == 'token failed'){
-                                $location.path("login");
-                            }
-                        });
-                } else if (data['status'] == 'error') {
-                    console.log(data)
-                    $scope.Er = data['error'];
-                }else if(data['error'] == 'token failed'){
-                    $location.path("login");
-                }
-            });
+                            }),
+                            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                        ).success(function (data) {
+                                if (data['status'] == 'ok') {
+                                    console.log(data['data'])
+                                    $("#wx_pay").css("height",$(document).height());
+                                    $("#wx_pay").css("width",$(document).width());
+                                    $('#wx_pay .content .hint_con img').attr('src',data['data'])
+                                    $('#wx_pay').slideDown(200);
+                                } else if (data['status'] == 'error') {
+                                    console.log(data)
+                                    $scope.Er = data['error'];
+                                }else if(data['error'] == 'token failed'){
+                                    $location.path("login");
+                                }
+                            });
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }else{
+            $('#payment_main .payment_content .hint ').slideDown(500);
+            $('#payment_main .payment_content .hint .login_msg p').text('请选择地址')
+            $timeout(function () {
+                $('#payment_main .payment_content .hint ').slideUp(500);
+            },2000)
+        }
+
     }
 
 
 })
     .controller('shop', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
         $scope.cart_shop()
+        $scope.cookies()
     var show = function () {
         $http.post(
             $scope.homeUrl + "shoppingCarInterfaces.api?getShoppingCars", $.param({
@@ -1572,9 +1841,25 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
         ).success(function (data) {
                 if (data['status'] == 'ok') {
-                    $('#hint').slideUp(500);
+
                     show()
                     $scope.cart_shop()
+                    $timeout(function () {
+                        var arr =[],num = 0,money = 0 ;
+                        $('#shopping .content .item .check').each(function (i) {
+                            if($(this).val() === '1') {
+                                arr.push($(this).data('id'))
+                                num++
+                                money = money + $(this).parent().siblings('li.money').find('p').text()*1;
+                            }
+
+                        })
+                        var b = arr.join(',')
+                        $("#shopping .content .all_cart .btn").attr('order_id',b)
+                        $("#shopping .content .all_cart .detail .num").text(num)
+                        $("#shopping .content .all_cart .detail .money").text('¥'+money)
+                    },500)
+                    $('#hint').slideUp(500);
                 } else if (data['status'] == 'error') {
                     console.log(data)
                     $scope.Er = data['error'];
@@ -1585,8 +1870,18 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     }
     //立即申请
     $scope.apply_for = function () {
+
         var order_id =  $("#shopping .content .all_cart .btn").attr('order_id')
-        $location.path("pay/"+order_id);
+        if(order_id != ''){
+            $location.path("pay/"+order_id);
+        }else{
+            $('#shopping .content .center .hint ').slideDown(500);
+            $('#shopping .content .center .hint .login_msg p').text('请选择购买商品')
+            $timeout(function () {
+                $('#shopping .content .center .hint ').slideUp(500);
+            },2000)
+        }
+
     }
 
 })
@@ -2008,11 +2303,22 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                  });
          }
         }
-
+        //完成支付
+        $scope.pay_true = function () {
+            $scope.obligation()
+            $('#wx_pay').slideUp(200);
+            $timeout(function () {
+                $location.path("transact");
+            })
+        }
 
 })
     .controller('order_detail', function ($scope, $rootScope, $location,$routeParams, $timeout, $http, $cookies, $cookieStore){
-
+        $scope.show_aa = function () {
+            $("#show_aa").css("height",$(document).height());
+            $("#show_aa").css("width",$(document).width());
+            $('#show_aa').slideDown(200);
+        }
         $scope.order_detail = function () {
             $http.post(
                 $scope.homeUrl + "orderInterfaces.api?getOneOrderDetail", $.param({
@@ -2025,6 +2331,25 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     if (data['status'] == 'ok') {
                         console.log(data['data'])
                         $scope.order_data= data['data']
+                        $http.post(
+                            $scope.homeUrl + "orderInterfaces.api?getOrderLogisticsDetails", $.param({
+                                token:$cookieStore.get('token'),
+                                member_id:$cookieStore.get('member_id'),
+                                order_id:$routeParams.order_id,
+                                logistics_no:data['data'].logistics_no
+                            }),
+                            {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                        ).success(function (data) {
+                                if (data['status'] == 'ok') {
+                                    //console.log(data['data'])
+                                    $scope.expressage= data['data']
+                                } else if (data['status'] == 'error') {
+                                    console.log(data)
+                                    $scope.Er = data['error'];
+                                }else if(data['error'] == 'token failed'){
+                                    $location.path("login");
+                                }
+                            });
                     } else if (data['status'] == 'error') {
                         console.log(data)
                         $scope.Er = data['error'];
@@ -2059,6 +2384,46 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         $location.path("login");
                     }
                 });
+        }
+        //删除订单
+        $scope.cancel_obligation = function () {
+            var order_id = $('#hintOne .content .hint_btn2').attr('data_id')
+            $http.post(
+                $scope.homeUrl + "orderInterfaces.api?deleteOrder", $.param({
+                    token:$cookieStore.get('token'),
+                    member_id:$cookieStore.get('member_id'),
+                    order_id:order_id
+                }),
+                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+            ).success(function (data) {
+                    if (data['status'] == 'ok') {
+                        $('#hintOne').slideUp(200);
+                        $location.path("obligation");
+                    } else if (data['status'] == 'error') {
+                        console.log(data)
+                        $scope.Er = data['error'];
+                    }else if(data['error'] == 'token failed'){
+                        $location.path("login");
+                    }
+                });
+        }
+        //完成支付
+        $scope.pay_true = function () {
+            $scope.order_detail()
+            $('#wx_pay').slideUp(200);
+        }
+        //显示大图片
+        $scope.show_img = function ($event) {
+            var src = $($event.target).attr('src');
+            $("#show_image").css("height",$(document).height());
+            $("#show_image").css("width",$(document).width());
+            $('#show_image .content img').attr('src',src)
+            $('#show_image').slideDown(200);
+        }
+        //隐藏图片
+        $scope.hide_img = function () {
+            $('#show_image').slideUp(200);
+
         }
 })
     .controller('personage', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
@@ -2451,49 +2816,61 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         $scope.submit = function () {
             var pic1 = $('#cause_main .content  .form_name img.pic1').attr('src');
             var text = $('#cause_main .content  .state input').val();
-            var goods_id = $('#cause_main .content  .order_number').data('id').toString();
+            var goods_id = $('#cause_main .content .order_number').data('id').toString();
             var goods_ids = goods_id.split(',');
-            for(var i=0; i<goods_ids.length; i++){
-                $http.post(
-                    $scope.homeUrl + "orderInterfaces.api?refundOrder", $.param({
-                        token:$cookieStore.get('token'),
-                        member_id:$cookieStore.get('member_id'),
-                        order_id: $routeParams.order_id,
-                        order_goods_id:goods_ids[i],
-                        refund_count:1,
-                        refund_desc:text,
-                        refund_img1:pic1
-                    }),
-                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-                ).success(function (data) {
-                        if (data['status'] == 'ok') {
-                            console.log(data)
-                            $scope.msg = data.data
-                            $("#cause_main .content .hint").css("height",$(document).height());
-                            $("#cause_main .content .hint").css("width",$(document).width());
-                            $('#cause_main .content .hint').slideDown(200)
-                            $timeout(function () {
-                                $('#cause_main .content .hint').slideUp(200);
-                                $scope.msg = '';
-                                history.back(-1);
-                            },3000)
-                        } else if (data['status'] == 'error') {
-                            console.log(data)
-                            $scope.msg = data.error
-                            $("#cause_main .content .hint").css("height",$(document).height());
-                            $("#cause_main .content .hint").css("width",$(document).width());
-                            $('#cause_main .content .hint').slideDown(200)
-                            $timeout(function () {
-                                $('#cause_main .content .hint').slideUp(200);
-                                $scope.msg = '';
-                                history.back(-1);
-                            },3000)
-                            $scope.Er = data['error'];
-                        }else if(data['error'] == 'token failed'){
-                            $location.path("login");
-                        }
-                    });
+            if(goods_id == ''){
+                $("#cause_main .content .hint").css("height",$(document).height());
+                $("#cause_main .content .hint").css("width",$(document).width());
+                $scope.msg = '请选择退款商品！';
+                $('#cause_main .content .hint').slideDown(200)
+                $timeout(function () {
+                    $('#cause_main .content .hint').slideUp(200);
+                    $scope.msg = '';
+                },3000)
+            }else{
+                for(var i=0; i<goods_ids.length; i++){
+                    $http.post(
+                        $scope.homeUrl + "orderInterfaces.api?refundOrder", $.param({
+                            token:$cookieStore.get('token'),
+                            member_id:$cookieStore.get('member_id'),
+                            order_id: $routeParams.order_id,
+                            order_goods_id:goods_ids[i],
+                            refund_count:1,
+                            refund_desc:text,
+                            refund_img1:pic1
+                        }),
+                        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                    ).success(function (data) {
+                            if (data['status'] == 'ok') {
+                                console.log(data)
+                                $scope.msg = data.data
+                                $("#cause_main .content .hint").css("height",$(document).height());
+                                $("#cause_main .content .hint").css("width",$(document).width());
+                                $('#cause_main .content .hint').slideDown(200)
+                                $timeout(function () {
+                                    $('#cause_main .content .hint').slideUp(200);
+                                    $scope.msg = '';
+                                    history.back(-1);
+                                },3000)
+                            } else if (data['status'] == 'error') {
+                                console.log(data)
+                                $scope.msg = data.error
+                                $("#cause_main .content .hint").css("height",$(document).height());
+                                $("#cause_main .content .hint").css("width",$(document).width());
+                                $('#cause_main .content .hint').slideDown(200)
+                                $timeout(function () {
+                                    $('#cause_main .content .hint').slideUp(200);
+                                    $scope.msg = '';
+                                    history.back(-1);
+                                },3000)
+                                $scope.Er = data['error'];
+                            }else if(data['error'] == 'token failed'){
+                                $location.path("login");
+                            }
+                        });
+                }
             }
+
 
         }
     })
@@ -2629,7 +3006,8 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     head_img:imgUrl,
                     address_detail:$scope.address_detail,
                     member_type:$scope.isType,
-                    duty:$scope.duty
+                    duty:$scope.duty,
+                    industry:$scope.industry
                 }),
                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
             ).success(function (data) {
@@ -2920,28 +3298,40 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var pic1 = $('#copyright_main .content .data .form_name img.pic1').attr('src')
             var pic2 = $('#copyright_main .content .data .form_name img.pic2').attr('src')
             var pic3 = $('#copyright_main .content .data .form_name img.pic3').attr('src')
+            if(pic1 != '' && pic2 != '' && pic3 != ''){
+                $http.post(
+                    $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
+                        token:$cookieStore.get('token'),
+                        member_id:$cookieStore.get('member_id'),
+                        order_goods_id: $routeParams.order_good_id,
+                        product_img:pic1,
+                        works_sample:pic2,
+                        others:pic3
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                ).success(function (data) {
+                        if (data['status'] == 'ok') {
+                            console.log(data['data'])
+                            $('#copyright_main .content .hint ').slideDown(500);
+                            $('#copyright_main .content .hint .login_msg p').text('提交成功！')
+                            $timeout(function () {
+                                $('#copyright_main .content .hint ').slideUp(500);
+                            },2000)
+                        } else if (data['status'] == 'error') {
+                            console.log(data)
+                            $scope.Er = data['error'];
+                        }else if(data['error'] == 'token failed'){
+                            $location.path("login");
+                        }
+                    });
+            }else{
+                $('#copyright_main .content .hint ').slideDown(500);
+                $('#copyright_main .content .hint .login_msg p').text('填写完整哦！')
+                $timeout(function () {
+                    $('#copyright_main .content .hint ').slideUp(500);
+                },2000)
+            }
 
-
-            $http.post(
-                $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
-                    token:$cookieStore.get('token'),
-                    member_id:$cookieStore.get('member_id'),
-                    order_goods_id: $routeParams.order_good_id,
-                    product_img:pic1,
-                    works_sample:pic2,
-                    others:pic3
-                }),
-                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-            ).success(function (data) {
-                    if (data['status'] == 'ok') {
-                        console.log(data['data'])
-                    } else if (data['status'] == 'error') {
-                        console.log(data)
-                        $scope.Er = data['error'];
-                    }else if(data['error'] == 'token failed'){
-                        $location.path("login");
-                    }
-                });
         }
 
 })
@@ -3010,29 +3400,42 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var pic2 = $('#parent_main .content .data .form_name img.pic2').attr('src')
             var pic3 = $('#parent_main .content .data .form_name img.pic3').attr('src')
             var pic4 = $('#parent_main .content .data .form_name img.pic4').attr('src')
+            if(pic1 != '' && pic2 != '' && pic3 != '' && pic4 != ''){
+                $http.post(
+                    $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
+                        token:$cookieStore.get('token'),
+                        member_id:$cookieStore.get('member_id'),
+                        order_goods_id: $routeParams.order_good_id,
+                        product_img:pic2,
+                        secrecy:pic1,
+                        technique:pic3,
+                        others:pic4
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                ).success(function (data) {
+                        if (data['status'] == 'ok') {
+                            //console.log(data['data'])
+                            $('#parent_main .content .hint ').slideDown(500);
+                            $('#parent_main .content .hint .login_msg p').text('提交成功!')
+                            $timeout(function () {
+                                $('#parent_main .content .hint ').slideUp(500);
+                            },2000)
+                        } else if (data['status'] == 'error') {
+                            console.log(data)
+                            $scope.Er = data['error'];
+                        }else if(data['error'] == 'token failed'){
+                            $location.path("login");
+                        }
+                    });
+            }else{
+                $('#parent_main .content .hint ').slideDown(500);
+                $('#parent_main .content .hint .login_msg p').text('填写完整哦!')
+                $timeout(function () {
+                    $('#parent_main .content .hint ').slideUp(500);
+                },2000)
+            }
 
 
-            $http.post(
-                $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
-                    token:$cookieStore.get('token'),
-                    member_id:$cookieStore.get('member_id'),
-                    order_goods_id: $routeParams.order_good_id,
-                    product_img:pic2,
-                    secrecy:pic1,
-                    technique:pic3,
-                    others:pic4
-                }),
-                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-            ).success(function (data) {
-                    if (data['status'] == 'ok') {
-                        console.log(data['data'])
-                    } else if (data['status'] == 'error') {
-                        console.log(data)
-                        $scope.Er = data['error'];
-                    }else if(data['error'] == 'token failed'){
-                        $location.path("login");
-                    }
-                });
         }
 })
     .controller('trademark_up', function ($scope, $rootScope, $location, $timeout,$routeParams, $http, $cookies, $cookieStore){
@@ -3047,6 +3450,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var order_id =  $routeParams.order_id;
             $location.path('copyright_up/'+ id +'/'+ order_id)
         }
+
         $http.post(
             $scope.homeUrl + "orderInterfaces.api?getOneOrderDetail", $.param({
                 token:$cookieStore.get('token'),
@@ -3103,35 +3507,49 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             var pic3 = $('#trademark_up_main .content .data .form_name img.pic3').attr('src')
             var pic4 = $('#trademark_up_main .content .data .form_name img.pic4').attr('src')
             var pic5 = $('#trademark_up_main .content .data .form_name img.pic5').attr('src')
+            if(pic1 != '' && pic2 != '' && pic3 != '' && pic4 != '' && pic5 != '' && text != ''){
+                $http.post(
+                    $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
+                        token:$cookieStore.get('token'),
+                        member_id:$cookieStore.get('member_id'),
+                        order_goods_id: $routeParams.order_good_id,
+                        license_no:text,
+                        license_img:pic2,
+                        logo_img:pic1,
+                        entrust_book:pic3,
+                        contract:pic4,
+                        others:pic5
+                    }),
+                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                ).success(function (data) {
+                        if (data['status'] == 'ok') {
+                            //console.log(data['data'])
+                            $('#trademark_up_main .content .hint ').slideDown(500);
+                            $('#trademark_up_main .content .hint .login_msg p').text('提交成功!')
+                            $timeout(function () {
+                                $('#trademark_up_main .content .hint ').slideUp(500);
+                            },2000)
+                        } else if (data['status'] == 'error') {
+                            console.log(data)
+                            $scope.Er = data['error'];
+                        }else if(data['error'] == 'token failed'){
+                            $location.path("login");
+                        }
+                    });
+            }else{
+                $('#trademark_up_main .content .hint ').slideDown(500);
+                $('#trademark_up_main .content .hint .login_msg p').text('填写完整哦!')
+                $timeout(function () {
+                    $('#trademark_up_main .content .hint ').slideUp(500);
+                },2000)
+            }
 
-            $http.post(
-                $scope.homeUrl + "orderInterfaces.api?updateOrderGoodsDetail", $.param({
-                    token:$cookieStore.get('token'),
-                    member_id:$cookieStore.get('member_id'),
-                    order_goods_id: $routeParams.order_good_id,
-                    license_no:text,
-                    license_img:pic2,
-                    logo_img:pic1,
-                    entrust_book:pic3,
-                    contract:pic4,
-                    others:pic5
-                }),
-                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
-            ).success(function (data) {
-                    if (data['status'] == 'ok') {
-                        console.log(data['data'])
-                    } else if (data['status'] == 'error') {
-                        console.log(data)
-                        $scope.Er = data['error'];
-                    }else if(data['error'] == 'token failed'){
-                        $location.path("login");
-                    }
-                });
         }
 })
     .controller('zhiYan', function ($scope, $rootScope, $location, $timeout, $http, $cookies, $cookieStore){
     $scope.class_data = [];
     $scope.datas='';
+    $scope.cookies()
     $http.post(
         $scope.homeUrl + "informationInterfaces.api?getInformationClasss", $.param({
 
@@ -3139,7 +3557,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
     ).success(function (data) {
             if (data['status'] == 'ok') {
-                console.log(data['data'])
+                //console.log(data['data'])
                 $scope.class_list = data['data']
 
             } else if (data['status'] == 'error') {
@@ -3157,7 +3575,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
              {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
          ).success(function (data) {
                  if (data['status'] == 'ok') {
-                     console.log(data['data'])
+                     //console.log(data['data'])
                      $scope.class_data = data['data']
                  } else if (data['status'] == 'error') {
                      console.log(data)
@@ -3280,7 +3698,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                     scope.end_data = data['data']
                                 } else if (data['status'] == 'error') {
                                     console.log(data)
-                                    $scope.Er = data['error'];
+                                    scope.Er = data['error'];
                                 }else if(data['error'] == 'token failed'){
                                     $location.path("login");
                                 }
@@ -3294,7 +3712,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     }
 })
     //分页
-    .directive('page1', function ($http,$cookieStore,$location,$timeout) {
+    .directive('page1', function ($http,$cookieStore,$location,$timeout){
         return {
             restrict:"EA",
             replace:'true',
@@ -3327,7 +3745,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                         scope.wait_data = data['data']
                                     } else if (data['status'] == 'error') {
                                         console.log(data)
-                                        $scope.Er = data['error'];
+                                        scope.Er = data['error'];
                                     }else if(data['error'] == 'token failed'){
                                         $location.path("login");
                                     }
@@ -3375,7 +3793,56 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                         scope.data = data['data']
                                     } else if (data['status'] == 'error') {
                                         console.log(data)
-                                        $scope.Er = data['error'];
+                                        scope.Er = data['error'];
+                                    }else if(data['error'] == 'token failed'){
+                                        $location.path("login");
+                                    }
+                                });
+                        }
+                    });
+                },500)
+
+            }
+
+        }
+    })
+    //商标分页
+    .directive('searchPage', function ($http,$cookieStore,$location,$routeParams,$timeout) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function (scope, elem, attrs) {
+                $timeout(function () {
+                    var page = $routeParams.total/10;
+                    var key = $routeParams.key;
+                    var type = $routeParams.type;
+                    page = Math.ceil(page)
+                    $("#search_main .content .result .page").Page({
+                        totalPages: page,//分页总数
+                        liNums: 5,//分页的数字按钮数(建议取奇数)
+                        activeClass: 'activP', //active 类样式定义
+                        prv: '上一页',//prev button name
+                        next: '下一页',//next button name
+                        hasFirstPage: true,
+                        hasLastPage: true,
+                        hasPrv: true,
+                        hasNext: true,
+                        callBack : function(page){
+                            $http.post(
+                                scope.homeUrl + "goodsInterfaces.api?searchTrademark", $.param({
+                                    key:key,
+                                    type:type,
+                                    page:page,
+                                    limit:10
+                                }),
+                                {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                            ).success(function (data) {
+                                    if (data['status'] == 'ok') {
+
+                                        scope.search_lists = data['data']
+                                    } else if (data['status'] == 'error') {
+                                        console.log(data)
+                                        scope.Er = data['error'];
                                     }else if(data['error'] == 'token failed'){
                                         $location.path("login");
                                     }
@@ -3496,7 +3963,27 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
         }
     })
+    //选中商标查询类型
+    .directive('selectSearch', function () {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function (scope, elem, attrs) {
 
+                $('#nav .content .search .query ul li').on('click', function () {
+                    var id = $(this).attr('value');
+                    var text = $(this).text();
+                    $('#nav .content .search .query .chaxun').attr('data-id',id)
+                    $('#nav .content .search .query .chaxun').text(text)
+                    $('#nav .content .search .query ul').removeClass('show');
+
+                })
+
+
+            }
+
+        }
+    })
     .directive('show1', function () {
         return {
             restrict:"EA",
@@ -3600,88 +4087,87 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             restrict:"EA",
             replace:'true',
             link: function(scope, element, attr) {
-                var timer = null;
+                var timer = null, cur = 2,flag = true;
+                var data = [
+                    {
+                        width: "200px",
+                        height: "280px",
+                        opacity:0.2 ,
+                        zIndex: 1,
+                        boxShadow: "0 2px 2px 0",
+                        left: "55%",
+                        top: "50%",
+                        transform: "translate(-255%, -35%)"
+                    },
+                    {
+                        width: "250px",
+                        height: "380px",
+                        opacity:0.6 ,
+                        zIndex: 9,
+                        boxShadow: "0 2px 3px 0",
+                        left: "53%",
+                        top: "50%",
+                        transform: "translate(-155%, -40%)"
+                    },
+                    {
+                        width: "460px",
+                        height: "490px",
+                        opacity:0.9 ,
+                        zIndex: 999,
+                        boxShadow: "0 2px 4px 0",
+                        top: "70px",
+                        left: "50%",
+                        transform: "translate(-50%, 0)"
+                    },
+                    {
+                        width: "250px",
+                        height: "380px",
+                        opacity:0.6 ,
+                        zIndex: 9,
+                        boxShadow: "0 2px 3px 0",
+                        left: "47%",
+                        top: "50%",
+                        transform: "translate(55%, -40%)"
+                    },
+                    {
+                        width: "200px",
+                        height: "280px",
+                        opacity:0.2 ,
+                        zIndex: 1,
+                        boxShadow: "0 2px 2px 0",
+                        left: "45%",
+                        top: "50%",
+                        transform: "translate(155%, -35%)"
+                    }
+                ];
+                var pic_data = [
+                    {
+                        height: "155px"
+                    },
+                    {
+                        height: "215px"
+                    },
+                    {
+                        height: "280px"
+                    },
+                    {
+                        height: "215px"
+                    },
+                    {
+                        height: "155px"
+                    }
+                ];
+                $("#carousel .pic1").width("100%");
+                var list = $("#carousel li");
+                var pics = $("#carousel li .pic1");
+                list.each(function (index) {
+                    $(this).css(data[index]);
+                });
+                pics.each(function (index) {
+                    $(this).css(pic_data[index]);
+                });
                 carousel()
                 function carousel() {
-                    var data = [
-                        {
-                            width: "250px",
-                            height: "300px",
-                            opacity:0.2 ,
-                            zIndex: 1,
-                            boxShadow: "0 2px 2px 0",
-                            left: "55%",
-                            top: "50%",
-                            transform: "translate(-240%, -35%)"
-                        },
-                        {
-                            width: "315px",
-                            height: "420px",
-                            opacity:0.6 ,
-                            zIndex: 9,
-                            boxShadow: "0 2px 3px 0",
-                            left: "53%",
-                            top: "50%",
-                            transform: "translate(-140%, -40%)"
-                        },
-                        {
-                            width: "480px",
-                            height: "540px",
-                            opacity:0.9 ,
-                            zIndex: 999,
-                            boxShadow: "0 2px 4px 0",
-                            top: "70px",
-                            left: "50%",
-                            transform: "translate(-50%, 0)"
-                        },
-                        {
-                            width: "315px",
-                            height: "420px",
-                            opacity:0.6 ,
-                            zIndex: 9,
-                            boxShadow: "0 2px 3px 0",
-                            left: "47%",
-                            top: "50%",
-                            transform: "translate(40%, -40%)"
-                        },
-                        {
-                            width: "250px",
-                            height: "300px",
-                            opacity:0.2 ,
-                            zIndex: 1,
-                            boxShadow: "0 2px 2px 0",
-                            left: "45%",
-                            top: "50%",
-                            transform: "translate(140%, -35%)"
-                        }
-                    ];
-                    var pic_data = [
-                        {
-                            height: "170px"
-                        },
-                        {
-                            height: "240px"
-                        },
-                        {
-                            height: "315px"
-                        },
-                        {
-                            height: "240px"
-                        },
-                        {
-                            height: "170px"
-                        }
-                    ];
-                    $("#carousel .pic1").width("100%");
-                    var list = $("#carousel li");
-                    var pics = $("#carousel li .pic1");
-                    list.each(function (index) {
-                        $(this).css(data[index]);
-                    });
-                    pics.each(function (index) {
-                        $(this).css(pic_data[index]);
-                    });
-                    var cur = 2;
                     timer =  setInterval(function () {
                         data.unshift(data.pop());
                         pic_data.unshift(pic_data.pop());
@@ -3698,7 +4184,74 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         });
                     }, 4000);
                 }
+                $('#carousel .content span.left').mouseenter(function () {
+                    clearInterval(timer)
+                })
+                $('#carousel .content p.right').mouseenter(function () {
+                    clearInterval(timer)
+                })
+                $('#carousel .content ul').mouseenter(function () {
+                    clearInterval(timer)
+                })
+                $('#carousel .content ul').mouseleave(function () {
+                    timer =  setInterval(function () {
+                        data.unshift(data.pop());
+                        pic_data.unshift(pic_data.pop());
+                        // console.log(data);
+                        cur ++;
+                        if ( cur >= list.length ) {
+                            cur = 0;
+                        }
+                        list.eq(cur).addClass("active4").siblings().removeClass("active4");
+                        list.each(function (index) {
+                            $(this).css(data[index]);
+                            $(this).find('.pic1').css(pic_data[index]);
 
+                        });
+                    }, 4000);
+                })
+                $('#carousel .content p.right').on('click', function () {
+                    if(flag){
+                        flag = false;
+                        data.unshift(data.pop());
+                        pic_data.unshift(pic_data.pop());
+                        // console.log(data);
+                        cur ++;
+                        if ( cur >= list.length ) {
+                            cur = 0;
+                        }
+                        list.eq(cur).addClass("active4").siblings().removeClass("active4");
+                        list.each(function (index) {
+                            $(this).css(data[index]);
+                            $(this).find('.pic1').css(pic_data[index]);
+
+                        });
+                    }
+
+                })
+
+                $('#carousel .content span.left').on('click', function () {
+                    if(flag){
+                        flag = false;
+                        data.push(data.shift())
+                        pic_data.push(pic_data.shift())
+                        // console.log(data);
+                        cur --;
+                        if ( cur < 0 ) {
+                            cur = 4;
+                        }
+                        list.eq(cur).addClass("active4").siblings().removeClass("active4");
+                        list.each(function (index) {
+                            $(this).css(data[index]);
+                            $(this).find('.pic1').css(pic_data[index]);
+
+                        });
+                    }
+
+                })
+                list[list.length-1].addEventListener("transitionend",function () {
+                    flag = true
+                })
 
             }
 
@@ -3723,22 +4276,31 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
     })
 
     //商品服务类型选中
-    .directive('onService', function ($location,$http,$q,$timeout) {
+    .directive('onService', function ($location,$http,$q,$timeout,$routeParams) {
         return {
             restrict:"EA",
             replace:'true',
             link: function(scope, element, attr) {
                 $('#brand_shopping .content .service ul li').on('click', function () {
                     $(this).addClass('current').siblings().removeClass('current')
-                    var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
-                    var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
+                    //var case_id = $('#brand_shopping .center .total .money').attr('data_case_id')
+                    //var service_id = $('#brand_shopping .center .total .money').attr('data_service_id')
+                    var service_id = $(this).attr('service_id')
+                    $('#brand_shopping .content .total .money').attr('data_service_id',service_id)
                     var end = $q.defer();
+                    var arr =[]
+                    arr[0] = $('#brand_shopping .content .total .money').attr('data_case_id');
+                    arr[1] = service_id;
+
+                    arr = arr.join()
+                    $('#brand_shopping .content .click .btn2').attr('specification_list',arr)
                     $timeout(function () {
-                        if(case_id !='' && service_id !=''){
+                        if(arr[0] !='' && arr[1] !=''){
                             var specification_list = $('#brand_shopping .center .click .btn2').attr('specification_list')
                             $http.post(
                                 scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                                    specification_list:specification_list
+                                    specification_list:arr,
+                                    goods_id:$routeParams.goods_id
                                 }),
                                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                             ).success(function (data) {
@@ -3762,47 +4324,50 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         }
     })
     //专利商品案件类型选中
-    .directive('onSelectedOne', function ($location) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                $('#patent_shopping .patent_content .case ul li').on('click', function () {
-                    $(this).addClass('current').siblings().removeClass('current')
-                    var arr = $(this).attr('case_id')
-                    $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
-                    $('#patent_shopping .patent_content .service ul li').removeClass('current')
-                    $('#patent_shopping .patent_content .items ul li').removeClass('current')
-                    $('#patent_shopping .patent_content .items').removeClass('show')
-                    $('#patent_shopping .patent_content .total .money').attr('data_service_id','')
-                    $('#patent_shopping .patent_content .total .money').attr('data_contribute_id','')
-                    $('#patent_shopping .patent_content .total .money').text('0')
-                    $('#patent_shopping .patent_content .number span').text('1')
+    //.directive('onSelectedOne', function ($location,$http) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //
+    //        link: function(scope, element, attr) {
+    //            $('#patent_shopping .patent_content .case ul li').on('click', function () {
+    //                $(this).addClass('current').siblings().removeClass('current')
+    //
+    //            })
+    //
+    //        }
+    //
+    //    }
+    //})
 
-                })
 
-            }
-
-        }
-    })
     //专利商品服务类型选中
-    .directive('onServiceOne', function ($timeout,$http,$q) {
+    .directive('onServiceOne', function ($timeout,$http,$q,$routeParams) {
         return {
             restrict:"EA",
             replace:'true',
             link: function(scope, element, attr) {
                 $('#patent_shopping .patent_content .service ul li').on('click', function () {
                     $(this).addClass('current').siblings().removeClass('current')
+                    $('#patent_shopping .patent_content .number span').text('1')
                     var case_id = $('#patent_shopping .patent_content .total .money').attr('data_case_id')
                     var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
-                    var contribute_id = $('#patent_shopping .patent_content .items ul li').eq(1).attr('contribute_id')
+                    //var contribute_id = $('#patent_shopping .patent_content .items ul li').eq(1).attr('contribute_id')
                     var end = $q.defer();
+                    var service_id = $(this).attr('service_id')
+                    $('#patent_shopping .patent_content .total .money').attr('data_service_id',service_id)
+                    var arr =[]
+                    arr[0] = case_id;
+                    arr[1] = service_id;
+                    arr = arr.join()
+                    $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
                     $timeout(function () {
-                        if(case_id !='' && service_id !='' && contribute_id==undefined ){
-                            var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
+                        if(case_id !='' && service_id !='' ){
+                            //var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
                             $http.post(
                                 scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                                    specification_list:specification_list
+                                    specification_list:arr,
+                                    goods_id:$routeParams.goods_id
                                 }),
                                 {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                             ).success(function (data) {
@@ -3817,7 +4382,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                         }else{
                             end.resolve();
                         }
-                    })
+                    },100)
                 })
 
             }
@@ -3825,7 +4390,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         }
     })
     //专利缴纳选中
-    .directive('onContributeOne', function ($location,$timeout,$q,$http) {
+    .directive('onContributeOne', function ($location,$timeout,$q,$http,$routeParams) {
         return {
             restrict:"EA",
             replace:'true',
@@ -3840,12 +4405,19 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             var service_id = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
                             var contribute_id = $('#patent_shopping .patent_content .total .money').attr('data_contribute_id')
                             var end = $q.defer();
+                            var arr =[]
+                            arr[0] = case_id;
+                            arr[1] = service_id;
+                            arr[2] = contribute_id;
+                            arr = arr.join()
+                            $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
                             $timeout(function () {
                                 if(case_id !='' && service_id !='' && contribute_id != '' ){
-                                    var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
+                                    //var specification_list = $('#patent_shopping .patent_content .click .btn2').attr('specification_list')
                                     $http.post(
                                         scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
-                                            specification_list:specification_list
+                                            specification_list:arr,
+                                            goods_id:$routeParams.goods_id
                                         }),
                                         {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
                                     ).success(function (data) {
@@ -3863,7 +4435,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 }
                             })
                         })
-                    })
+                    },100)
                 }
 
 
@@ -4003,13 +4575,13 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             }
                         })
 
-                    },500);
+                    },200);
                 }
             }
         };
     }])
-    //商标选中二个生成价格
-    .directive('casePrice', function ($timeout) {
+    //其他选中二个生成价格
+    .directive('casePrice', function ($timeout,$http,$routeParams) {
         return {
             restrict:"EA",
             replace:'true',
@@ -4018,8 +4590,30 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                     $timeout(function() {
 
                         $('#brand_shopping .content .case ul li').on('click', function () {
-                             var case_id = $(this).attr('case_id')
-                            $('#brand_shopping .content .total .money').attr('data_case_id',case_id)
+                            $(this).addClass('current').siblings().removeClass('current')
+                            $('#brand_shopping .content .number span').text('1');
+                            scope.goods_id = $('#brand_shopping .center h2').attr('goods_id')
+                            scope.specification_id =  $(this).attr('case_id')
+                            $('#brand_shopping .center .total .money').attr('data_case_id',scope.specification_id)
+                            $timeout(function () {
+                                var specification_list = $('#brand_shopping .center .total .money').attr('data_case_id')
+                                $http.post(
+                                    scope.homeUrl + "goodsInterfaces.api?getGoodsSpecificationByList", $.param({
+                                        specification_list: scope.specification_id,
+                                        goods_id:$routeParams.goods_id
+                                    }),
+                                    {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+                                ).success(function (data) {
+                                        if (data['status'] == 'ok') {
+                                            //console.log(data['data'])
+                                            $('#brand_shopping .center .total .money').text(data['data'].price)
+                                        } else if (data['status'] == 'error') {
+                                            console.log(data)
+                                            scope.Er = data['error'];
+                                        }else if(data['error'] == 'token failed'){
+                                        }
+                                    });
+                            })
 
                         })
                     });
@@ -4029,7 +4623,21 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
 
         }
     })
-
+//商标选中二个生成价格
+//    .directive('casePriceTwo', function ($timeout,$http,$routeParams) {
+//        return {
+//            restrict:"EA",
+//            replace:'true',
+//            scope: {
+//                service_arr:'='
+//            },
+//            link: function(scope, element, attr) {
+//
+//
+//            }
+//
+//        }
+//    })
     //专利进入选中
     .directive('productSpecificationOne',['$timeout', function ($timeout) {
         return {
@@ -4055,7 +4663,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         };
     }])
     //专利进入页面渲染选中
-    .directive('productServiceOne',['$timeout', function ($timeout) {
+    .directive('productServiceOne', function ($timeout,$http) {
         return {
             restrict: 'EA',
             replace:'true',
@@ -4076,7 +4684,45 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                 }
             }
         };
-}])
+})
+    //专利关税进入页面渲染选中
+    //.directive('productServiceTwo',['$timeout', function ($timeout,$http) {
+    //    return {
+    //        restrict: 'EA',
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //
+    //                $timeout(function() {
+    //                    var goods_id = $('#patent_shopping .patent_content h2').attr('goods_id');
+    //                    var specification_id = $('#patent_shopping .patent_content .service p').attr('selected_ser_id');
+    //                    $http.post(
+    //                        scope.homeUrl + "goodsInterfaces.api?getChilds", $.param({
+    //                            specification_id: specification_id,
+    //                            parent_id: goods_id
+    //                        }),
+    //                        {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}}
+    //                    ).success(function (data) {
+    //                            if (data['status'] == 'ok') {
+    //                                console.log(data['data'])
+    //                                scope.pet_contribute_arr = data['data']
+    //                                if(scope.pet_contribute_arr != ''){
+    //                                    $('#patent_shopping .patent_content .items').addClass('show')
+    //                                    //$('#patent_shopping .patent_content .items ul li').eq(0).addClass('current')
+    //                                }else{
+    //                                    $('#patent_shopping .patent_content .items').removeClass('show')
+    //                                }
+    //                            } else if (data['status'] == 'error') {
+    //                                console.log(data)
+    //                                scope.Er = data['error'];
+    //                            }else if(data['error'] == 'token failed'){
+    //                            }
+    //                        });
+    //                },500)
+    //
+    //
+    //        }
+    //    };
+    //}])
 //专利选中二个生成价格
     .directive('casePriceOne', function ($timeout) {
         return {
@@ -4099,112 +4745,113 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
         }
     })
     //商标选中生成价格
-    .directive('servicePrice', function ($timeout) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function() {
-                        $('#brand_shopping .content .service ul li').on('click', function () {
-                            var service_id = $(this).attr('service_id')
-                            $('#brand_shopping .content .total .money').attr('data_service_id',service_id)
-                        })
-                    });
-                }
-
-            }
-
-        }
-    })
+    //.directive('servicePrice', function ($timeout) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //            if (scope.$last === true) {
+    //                $timeout(function() {
+    //                    $('#brand_shopping .content .service ul li').on('click', function () {
+    //                        var service_id = $(this).attr('service_id')
+    //                        $('#brand_shopping .content .total .money').attr('data_service_id',service_id)
+    //
+    //                    })
+    //                });
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //})
     //获取规格id
-    .directive('listId', function ($timeout,$http,$routeParams) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function() {
-                        $('#brand_shopping .content .service ul li').on('click', function () {
-                            var arr =[]
-                            arr[0] = $('#brand_shopping .content .total .money').attr('data_case_id');
-                            arr[1] = $('#brand_shopping .content .total .money').attr('data_service_id');
-
-                            arr = arr.join()
-                            $('#brand_shopping .content .click .btn2').attr('specification_list',arr)
-                        })
-                    },200);
-                }
-
-            }
-
-        }
-    })
+    //.directive('listId', function ($timeout,$http,$routeParams) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //            if (scope.$last === true) {
+    //                $timeout(function() {
+    //                    $('#brand_shopping .content .service ul li').on('click', function () {
+    //                        var arr =[]
+    //                        arr[0] = $('#brand_shopping .content .total .money').attr('data_case_id');
+    //                        arr[1] = $('#brand_shopping .content .total .money').attr('data_service_id');
+    //
+    //                        arr = arr.join()
+    //                        $('#brand_shopping .content .click .btn2').attr('specification_list',arr)
+    //                    })
+    //                },200);
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //})
     //专利选中二个生成价格
-    .directive('servicePriceOne', function ($timeout) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function() {
-                        $('#patent_shopping .patent_content .service ul li').on('click', function () {
-                            var service_id = $(this).attr('service_id')
-                            $('#patent_shopping .patent_content .total .money').attr('data_service_id',service_id)
-                        })
-                    });
-                }
-
-            }
-
-        }
-    })
+    //.directive('servicePriceOne', function ($timeout) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //            if (scope.$last === true) {
+    //                $timeout(function() {
+    //                    $('#patent_shopping .patent_content .service ul li').on('click', function () {
+    //                        var service_id = $(this).attr('service_id')
+    //                        $('#patent_shopping .patent_content .total .money').attr('data_service_id',service_id)
+    //                    })
+    //                });
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //})
     //获取专利规格id
-    .directive('listIdOne', function ($timeout,$http,$routeParams) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function() {
-                        $('#patent_shopping .patent_content .service ul li').on('click', function () {
-                            var arr =[]
-                            arr[0] = $('#patent_shopping .patent_content .total .money').attr('data_case_id');
-                            arr[1] = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
-                            arr = arr.join()
-                            $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
-                        })
-                    },200);
-                }
-
-            }
-
-        }
-    })
+    //.directive('listIdOne', function ($timeout,$http,$routeParams) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //            if (scope.$last === true) {
+    //                $timeout(function() {
+    //                    $('#patent_shopping .patent_content .service ul li').on('click', function () {
+    //                        var arr =[]
+    //                        arr[0] = $('#patent_shopping .patent_content .total .money').attr('data_case_id');
+    //                        arr[1] = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
+    //                        arr = arr.join()
+    //                        $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
+    //                    })
+    //                },200);
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //})
     //获取专利三级规格id
-    .directive('listThreeId', function ($timeout,$http,$routeParams) {
-        return {
-            restrict:"EA",
-            replace:'true',
-            link: function(scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function() {
-                        $('#patent_shopping .patent_content .items ul li').on('click', function () {
-                            var arr =[]
-                            arr[0] = $('#patent_shopping .patent_content .total .money').attr('data_case_id');
-                            arr[1] = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
-                            arr[2] = $('#patent_shopping .patent_content .total .money').attr('data_contribute_id')
-
-                            arr = arr.join()
-                            $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
-                        })
-                    },200);
-                }
-
-            }
-
-        }
-    })
+    //.directive('listThreeId', function ($timeout,$http,$routeParams) {
+    //    return {
+    //        restrict:"EA",
+    //        replace:'true',
+    //        link: function(scope, element, attr) {
+    //            if (scope.$last === true) {
+    //                $timeout(function() {
+    //                    $('#patent_shopping .patent_content .items ul li').on('click', function () {
+    //                        var arr =[]
+    //                        arr[0] = $('#patent_shopping .patent_content .total .money').attr('data_case_id');
+    //                        arr[1] = $('#patent_shopping .patent_content .total .money').attr('data_service_id')
+    //                        arr[2] = $('#patent_shopping .patent_content .total .money').attr('data_contribute_id')
+    //
+    //                        arr = arr.join()
+    //                        $('#patent_shopping .patent_content .click .btn2').attr('specification_list',arr)
+    //                    })
+    //                },200);
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //})
     //购物车加
     .directive('cartReduce', function ($timeout,$http,$cookieStore) {
         return {
@@ -4695,9 +5342,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 if($(this).val() === '1') {
                                     arr.push($(this).data('id'))
                                     num++
-
                                    money = money + $(this).parent().siblings('li.money').find('p').text()*1;
-
                                 }
 
                             })
@@ -4757,9 +5402,9 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             restrict:"EA",
             replace:'true',
             link: function(scope, element, attr) {
-                if (scope.$last === true) {
+
                     $timeout(function() {
-                        $('#obligation_main .content .list_con .item7 .box2').on('click', function () {
+                        $(' .content .order_lists .list_con .item7 .box2').on('click', function () {
                             var show_id = $(this).attr('order_id')
                             $("#hintOne").css("height",$(document).height());
                             $("#hintOne").css("width",$(document).width());
@@ -4767,7 +5412,7 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                             $('#hintOne .content .hint_btn2').attr('data_id',show_id)
                         })
                     });
-                }
+
 
             }
 
@@ -4779,9 +5424,8 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             restrict:"EA",
             replace:'true',
             link: function(scope, element, attr) {
-                if (scope.$last === true) {
                     $timeout(function() {
-                        $('#obligation_main .content .list_con .item7 .box1').on('click', function () {
+                        $(' .content .order_lists .list_con .item7 .box1').on('click', function () {
                             var id = $(this).attr('order_id')
                             $http.post(
                                 scope.homeUrl + "orderInterfaces.api?payRealOrders", $.param({
@@ -4807,12 +5451,13 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
                                 });
                         })
                     });
-                }
+
 
             }
 
         }
     })
+
     //编辑昵称
     .directive('compileName', function ($timeout,$http,$cookieStore,$location) {
         return {
@@ -5349,9 +5994,77 @@ app.controller('home', function ($scope, $rootScope, $location, $timeout, $http,
             restrict:"EA",
             replace:'true',
             link: function (scope, elem, attrs) {
-             $('#wx_pay .hint_con img').on('click', function () {
+             $('#wx_pay .content  .hint_btn1').on('click', function () {
                  $('#wx_pay').slideUp(200);
              })
+            }
+
+        }
+    })
+    //点击回到顶部
+    .directive('scrollTop', function ($timeout,$http,$location,$routeParams) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function(scope, element, attr) {
+                $timeout(function () {
+                    $('#brand_product .content .left ul li').on('click', function () {
+
+                        $('html,body').animate({scrollTop:$('#head').offset().top})
+
+                    })
+                })
+            }
+
+        }
+    })
+    //点击回到顶部
+    .directive('scrollTopOne', function ($timeout,$http,$location,$routeParams) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function(scope, element, attr) {
+                $timeout(function () {
+                    $('#patent_product .content .left ul li').on('click', function () {
+
+                        $('html,body').animate({scrollTop:$('#head').offset().top})
+
+                    })
+                })
+            }
+
+        }
+    })
+//点击回到顶部
+    .directive('scrollTopTwo', function ($timeout,$http,$location,$routeParams) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function(scope, element, attr) {
+                $timeout(function () {
+                    $('#hot .content a').on('click', function () {
+
+                        $('html,body').animate({scrollTop:$('#head').offset().top})
+
+                    })
+                })
+            }
+
+        }
+    })
+//点击回到顶部
+    .directive('scrollTopThree', function ($timeout,$http,$location,$routeParams) {
+        return {
+            restrict:"EA",
+            replace:'true',
+            link: function(scope, element, attr) {
+                $timeout(function () {
+                    $('#love .content a').on('click', function () {
+
+                        $('html,body').animate({scrollTop:$('#head').offset().top})
+
+                    })
+                })
             }
 
         }

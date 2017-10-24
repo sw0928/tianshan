@@ -16,6 +16,7 @@
       <ul>
 
         <li ><a href="#/personage" ng-if="phone" ng-bind="phone"></a></li>
+        <li ><a href="" ng-if="phone" ng-click="logout()">注销</a></li>
         <li ><a href="#/login" ng-hide="phone">登录</a></li>
         <li ><a href="#/register" ng-hide="phone" >注册</a></li>
         <li><a href="#/shop" ng-if="phone"> <span></span>购物车<p >({{cart_num}})</p></a></li>
@@ -34,12 +35,14 @@
     </div>
     <div class="search fr">
       <div class="query">
-        <ul>
-          <li><select name="">
-            <option value="1">注册号码</option>
-            <option value="2">商品名称</option>
-            <option value="3">申请人</option>
-          </select></li>
+        <div class="chaxun" ng-click="show_search()" data-id="2">
+          商标查询
+        </div>
+        <img src="./assets/images/buypage_choose_down.png" alt=""/>
+        <ul select-search>
+          <li value="1">注册号码</li>
+          <li value="2">商标名称</li>
+          <li value="3">申请人</li>
         </ul>
       </div>
       <input class="text_con" type="text" name="" placeholder="请输入相关内容">
@@ -47,6 +50,9 @@
       <i ng-click="search()">
         <img src="./assets/images/homepage_icon_glass.png" alt="">
       </i>
+    </div>
+    <div class="liuyan">
+      <a href="#message">专利查询</a>
     </div>
     <div class="bar">
       <ul class="" home-light>
@@ -72,10 +78,10 @@
           <a href="#/other/13/89/6">高薪认定</a>
         </li>
         <li class="list_high">
-          <a href="http://st.yinhenet.com/">商标评估</a>
+          <a href="http://st.yinhenet.com/" target="_blank">商标评估</a>
         </li>
         <li class="list_high">
-          <a href="#/zhiYan/8">山天智妍</a>
+          <a href="#/zhiYan/8">山天智研</a>
         </li>
       </ul>
     </div>
@@ -112,32 +118,13 @@
         <div class="right"  >
           <div class="show_banner">
             <div class="show_right">
-              <ul >
+              <ul ng-repeat="item in brand track by $index">
                 <li>
-                  <a href="#/brand/{{brand[0].goods_id}}/0/2">{{brand[0].goods_name}} <i></i> </a>
-                </li>
-                <li >
-                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" ng-repeat="item in brand[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/brand/{{brand[1].goods_id}}/26/5">{{brand[1].goods_name}} <i></i> </a>
+                  <a href="#/brand/{{item.goods_id}}/{{item.goodsSpecificationBeans[0].specification_id}}/2">{{item.goods_name}} <i></i></a>
                 </li>
                 <li>
-                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/5"  ng-repeat="item in brand[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2" ng-repeat="item in item.goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
                 </li>
-
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/brand/{{brand[2].goods_id}}/0/2">{{brand[2].goods_name}} <i></i> </a>
-                </li>
-                <li>
-                  <a href="#/brand/{{item.goods_id}}/{{item.specification_id}}/2"  ng-repeat="item in brand[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
               </ul>
             </div>
 
@@ -145,38 +132,26 @@
           <div class="show_banner">
 
             <div class="show_right">
-              <ul >
+              <ul ng-repeat="item in brand2 track by $index">
                 <li>
-                  <a href="#/patent/{{brand2[0].goods_id}}/0/3">{{brand2[0].goods_name}} <i></i> </a>
+                  <a href="#/patent/{{item.goods_id}}/{{item.goodsSpecificationBeans[0].specification_id}}/3">{{item.goods_name}} <i></i></a>
                 </li>
-                <li >
-                  <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[0].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                <li>
+                  <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in item.goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
                 </li>
-
               </ul>
-              <ul >
-                <li>
-                  <a href="#/patent/{{brand2[1].goods_id}}/0/3">{{brand2[1].goods_name}} <i></i> </a>
-                </li>
-                <li>
-                  <a href="#/patent/{{item.goods_id}}/{{item.specification_id}}/3" ng-repeat="item in brand2[1].goodsSpecificationBeans  track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
-              </ul>
-
             </div>
 
           </div>
           <div class="show_banner">
             <div class="show_right">
-              <ul >
+              <ul ng-repeat="item in brand3 track by $index">
                 <li>
-                  <a href="#/other/{{brand3[0].goods_id}}/0/4">{{brand3[0].goods_name}} <i></i> </a>
+                  <a href="#/other/{{item.goods_id}}/{{item.goodsSpecificationBeans[0].specification_id}}/4">{{item.goods_name}} <i></i></a>
                 </li>
-                <li >
-                  <a href="#/other/{{brand3[0].goods_id}}/{{item.specification_id}}/4"  ng-repeat="item in brand3[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                <li>
+                  <a href="#/other/{{item.goods_id}}/{{item.specification_id}}/4" ng-repeat="item in item.goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
                 </li>
-
               </ul>
             </div>
 
@@ -184,68 +159,26 @@
           <div class="show_banner">
 
             <div class="show_right">
-              <ul >
+              <ul ng-repeat="item in brand4 track by $index">
                 <li>
-                  <a href="#/other/{{brand4[0].goods_id}}/0/3">{{brand4[0].goods_name}} <i></i> </a>
+                  <a href="#/other/{{item.goods_id}}/{{item.goodsSpecificationBeans[0].specification_id}}/6">{{item.goods_name}} <i></i></a>
                 </li>
-                <li >
-                  <a href="#/other/{{brand4[0].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                <li>
+                  <a href="#/other/{{item.goods_id}}/{{item.specification_id}}/6" ng-repeat="item in item.goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
                 </li>
-
               </ul>
-              <ul >
-                <li>
-                  <a href="#/other/{{brand4[1].goods_id}}/0/3">{{brand4[1].goods_name}} <i></i> </a>
-                </li>
-                <li>
-                  <a href="#/other/{{brand4[1].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
 
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/other/{{brand4[2].goods_id}}/0/3">{{brand4[2].goods_name}} <i></i> </a>
-                </li>
-                <li>
-                  <a href="#/other/{{brand4[2].goods_id}}/{{item.specification_id}}/3"  ng-repeat="item in brand4[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
-              </ul>
             </div>
 
           </div>
           <div class="show_banner">
             <div class="show_right">
-              <ul >
+              <ul ng-repeat="item in brand5 track by $index">
                 <li>
-                  <a href="#/other/{{brand5[0].goods_id}}/0/7">{{brand5[0].goods_name}} <i></i> </a>
-                </li>
-                <li >
-                  <a href="#/other/{{brand5[0].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[0].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/other/{{brand5[1].goods_id}}/0/7">{{brand5[1].goods_name}} <i></i> </a>
-                <li>
-                  <a href="#/other/{{brand5[1].goods_id}}/{{item.specification_id}}/7"  ng-repeat="item in brand5[1].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/other/{{brand5[2].goods_id}}/0/6">{{brand5[2].goods_name}} <i></i> </a>
-                <li>
-                  <a href="#/other/{{brand5[2].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[2].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
-                </li>
-              </ul>
-              <ul >
-                <li>
-                  <a href="#/other/{{brand5[3].goods_id}}/0/6">{{brand5[3].goods_name}} <i></i> </a>
+                  <a href="#/other/{{item.goods_id}}/{{item.goodsSpecificationBeans[0].specification_id}}/5">{{item.goods_name}} <i></i></a>
                 </li>
                 <li>
-                  <a href="#/other/{{brand5[3].goods_id}}/{{item.specification_id}}/6"  ng-repeat="item in brand5[3].goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
+                  <a href="#/other/{{item.goods_id}}/{{item.specification_id}}/5" ng-repeat="item in item.goodsSpecificationBeans track by $index">{{item.specificationBeans[0].specification_name}}</a>
                 </li>
               </ul>
             </div>
@@ -261,16 +194,16 @@
   </section>
   <!--热门推荐-->
   <section id="hot">
-    <div class="content">
+    <div class="content" scroll-top-two>
       <h3>热门推荐</h3>
       <a ng-href="{{item.goods_id < '4'?'#/brand/':'#/patent/' }}{{item.goods_id}}/{{item.specification_id}}/{{item.goods_id < '4'? '2':'3'}}"
-         ng-repeat="item in hot_list | limitTo : 8 track by $index" >
+         ng-repeat="item in hot_list | limitTo : 8 track by $index">
         <div class="tags">
           <i></i>
-          <h2>{{item.goodsBean.goods_name}}</h2>
+          <h2>{{item.specificationBeans[0].specification_name}}</h2>
           <p>{{item.recommend_info}}</p>
-          <span>¥ {{item.goodsBean.goods_price}}起</span>
-          <img src="./assets/images/homepage_pic_pre.png" alt="">
+          <span>¥ {{item.price}}起</span>
+          <img src="{{item.goodsBean.goods_img}}" alt="">
         </div>
       </a>
 
@@ -365,14 +298,17 @@
         </li>
 
       </ul>
+      <span class="left"></span>
+      <p class="right"></p>
     </div>
+
   </section>
   <!--合作伙伴-->
   <section id="partner">
     <div class="content">
       <h2>合作伙伴</h2>
       <div class="bos">
-        <a href="{{item.url}}" title="{{item.title}}" ng-repeat="item in friend_list track by $index">
+        <a href="{{item.url}}" title="{{item.title}}" ng-repeat="item in friend_list track by $index" target="_blank">
           <img src="{{item.img}}" alt=""/>
         </a>
       </div>

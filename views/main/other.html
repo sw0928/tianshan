@@ -12,7 +12,7 @@
             <h2 goods_price="{{brand_list.goods_price}}" goods_id="{{brand_list.goods_id}}">{{brand_list.goods_name}}</h2>
             <div class="case clearfix" >
                 <p selected_id = {{product_case_id}} >案件类型</p>
-                <ul ng-click="child()" >
+                <ul  >
                     <li ng-repeat="item in case_arr track by $index" case-price good-list  case_id="{{item.specificationBeans[0].specification_id}}" on-selected product-specification >{{item.specificationBeans[0].specification_name}}</li>
                 </ul>
             </div>
@@ -44,9 +44,14 @@
                     <img src="{{brand_list.counselorBean.head_img}}" alt="">
                 </div>
                 <p>{{brand_list.counselorBean.name}}</p>
-                <span>{{brand_list.counselorBean.position}}</span> <br>
+                <span>{{brand_list.counselorBean.info}}</span> <br>
                 <i>联系电话：{{brand_list.counselorBean.phone}}</i>
-                <a href="">在线咨询</a>
+                <!--<a href="">形象展示</a>-->
+            </div>
+        </div>
+        <div class="hint">
+            <div class="login_msg">
+                <p ng-bind="msg"></p>
             </div>
         </div>
     </div>
@@ -54,7 +59,7 @@
 <!--产品介绍-->
 <section id="brand_product">
     <div class="content">
-        <div class="left fl">
+        <div class="left fl" scroll-top>
             <h3>相关产品</h3>
             <div class="inland">
                 <p>国内商标 <i></i></p>

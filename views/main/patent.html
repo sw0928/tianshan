@@ -11,24 +11,25 @@
         <h2 goods_price="{{pet_brand_list.goods_price}}" goods_id="{{pet_brand_list.goods_id}}">{{pet_brand_list.goods_name}}</h2>
         <div class="case clearfix">
           <p selected_id = {{product_case_id}}>案件类型</p>
-          <ul ng-click="pet_child()">
-            <li ng-repeat="item in pet_case_arr track by $index" case-price-one good-list case_id="{{item.specificationBeans[0].specification_id}}" on-selected-one product-specification-one>{{item.specificationBeans[0].specification_name}}</li>
+          <ul >
+            <li ng-repeat="item in pet_case_arr track by $index" case-price-one good-list case_id="{{item.specificationBeans[0].specification_id}}" ng-click="pet_child($event)" product-specification-one>{{item.specificationBeans[0].specification_name}}</li>
           </ul>
         </div>
         <div class="service clearfix">
           <p selected_ser_id = {{product_service_id}}>服务类型</p>
-          <ul ng-click="contribute()">
-            <li ng-repeat="item in pet_service_arr track by $index" on-service-one list-id-one service-price-one service_id="{{item.specification_id}}"  product-service-one>{{item.specification_name}}</li>
+          <ul >
+            <li ng-repeat="item in pet_service_arr track by $index" on-service-one  service-price-one service_id="{{item.specification_id}}" ng-click="contribute($event)"  product-service-one>{{item.specification_name}}</li>
           </ul>
         </div>
-        <div class="items clearfix">
-          <p>官费缴纳</p>
+        <div class="items clearfix" >
+          <p >关税缴纳</p>
           <ul>
-            <li ng-repeat="item in pet_contribute_arr track by $index" contribute_id="{{item.specification_id}}" on-contribute-one list-three-id>
+            <li ng-repeat="item in pet_contribute_arr track by $index" contribute_id="{{item.specification_id}}" product-service-two on-contribute-one >
               {{item.specification_name}}
             </li>
           </ul>
         </div>
+
         <div class="number">
           <p>数量
             <button patent-reduce class="reduce">-</button>
@@ -51,9 +52,14 @@
             <img src="{{pet_brand_list.counselorBean.head_img}}" alt="">
           </div>
           <p>{{pet_brand_list.counselorBean.name}}</p>
-          <span>{{pet_brand_list.counselorBean.position}}</span> <br>
+          <span>{{pet_brand_list.counselorBean.info}}</span> <br>
           <i>联系电话：{{pet_brand_list.counselorBean.phone}}</i>
-          <a href="">在线咨询</a>
+          <!--<a href="">形象展示</a>-->
+        </div>
+      </div>
+      <div class="hint">
+        <div class="login_msg">
+          <p ng-bind="msg"></p>
         </div>
       </div>
     </div>
@@ -61,7 +67,7 @@
   <!--产品介绍-->
   <section id="patent_product">
     <div class="content">
-      <div class="left fl">
+      <div class="left fl" scroll-top-one>
         <h3>相关产品</h3>
         <div class="inland">
           <p>国内专利 <i></i></p>

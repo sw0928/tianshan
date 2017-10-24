@@ -2,62 +2,55 @@
 <footer id="footer">
   <div class="foot_top">
     <div class="links">
-      <p class="fl">友情链接:</p>
+      <p class="fl">{{firend_list[3].recommend_name}}:</p>
       <ul>
-        <li>
-          <a href="">网站S</a>
+        <li ng-repeat="item in firend_list[3].recommendBeans track by $index">
+          <a href="{{item.recommend_url}}" target="_blank">{{item.recommend_name}}</a>
         </li>
-        <li>
-          <a href="">网站S</a>
-        </li>
-        <li>
-          <a href="">网站S</a>
-        </li>
+
       </ul>
     </div>
     <div class="foot clearfix">
       <div class="ourselves fl">
         <ul>
           <li>
-            <h3>关于我们</h3>
+            <h3>{{firend_list[4].recommend_name}}</h3>
           </li>
-          <li>公司简介</li>
-          <li>公司简介</li>
-          <li>公司简介</li>
-          <li>公司简介</li>
+          <li ng-repeat="item in firend_list[4].recommendBeans track by $index">
+            <a href="{{item.recommend_url}}" target="_blank">{{item.recommend_name}}</a>
+          </li>
         </ul>
       </div>
       <div class="help fl">
         <ul>
           <li>
-            <h3>帮助中心</h3>
+            <h3>{{firend_list[2].recommend_name}}</h3>
           </li>
-          <li>售后服务</li>
-          <li>售后服务</li>
-          <li>售后服务</li>
-          <li>售后服务</li>
+          <li ng-repeat="item in firend_list[2].recommendBeans track by $index">
+            <a href="{{item.recommend_url}}" target="_blank">{{item.recommend_name}}</a>
+          </li>
+
         </ul>
       </div>
       <div class="news fl">
         <ul>
           <li>
-            <h3>新闻中心</h3>
+            <h3>{{firend_list[1].recommend_name}}</h3>
           </li>
-          <li>售后服务</li>
-          <li>售后服务</li>
-          <li>售后服务</li>
-          <li>售后服务</li>
+          <li ng-repeat="item in firend_list[1].recommendBeans track by $index">
+            <a href="{{item.recommend_url}}" target="_blank">{{item.recommend_name}}</a>
+          </li>
         </ul>
       </div>
       <div class="service fl">
         <ul>
           <li>
-            <h3>专题服务</h3>
+            <h3>{{firend_list[0].recommend_name}}</h3>
           </li>
-          <li>加盟合作</li>
-          <li>加盟合作</li>
-          <li>加盟合作</li>
-          <li>加盟合作</li>
+          <li ng-repeat="item in firend_list[0].recommendBeans track by $index">
+            <a href="{{item.recommend_url}}" target="_blank">{{item.recommend_name}}</a>
+          </li>
+
         </ul>
       </div>
       <div class="code ">

@@ -17,133 +17,38 @@
             <li>详情查询</li>
           </ul>
         </div>
-        <div class="search_con">
+        <div class="search_con" ng-repeat="item in search_lists track by $index">
           <ul>
-            <li>1</li>
+            <li>{{$index + 1}}</li>
             <li>
               <div class="imgs">
-
+                <img src="{{item.tmimage}}" alt=""/>
               </div>
             </li>
             <li>
-              1748594033
+              <span>{{item.regno}}</span>
             </li>
             <li>
-              第1类
+              {{item.intcls}}
             </li>
             <li>
-              黄灵支护
+              <span>{{item.tmname}}</span>
             </li>
             <li>
-              张久雨
+              <span>{{item.appname}}</span>
             </li>
             <li>
-              <a href="#/trad_detail">点击查看</a>
+              <a href="#/trad_detail/{{item.intcls}}/{{item.regno}}">点击查看</a>
             </li>
           </ul>
         </div>
-        <div class="search_con">
-          <ul>
-            <li>1</li>
-            <li>
-              <div class="imgs">
+        <div class="page" search-page >
 
-              </div>
-            </li>
-            <li>
-              1748594033
-            </li>
-            <li>
-              第1类
-            </li>
-            <li>
-              黄灵支护
-            </li>
-            <li>
-              张久雨
-            </li>
-            <li>
-              <a href="">点击查看</a>
-            </li>
-          </ul>
         </div>
-        <div class="search_con">
-          <ul>
-            <li>1</li>
-            <li>
-              <div class="imgs">
-
-              </div>
-            </li>
-            <li>
-              1748594033
-            </li>
-            <li>
-              第1类
-            </li>
-            <li>
-              黄灵支护
-            </li>
-            <li>
-              张久雨
-            </li>
-            <li>
-              <a href="">点击查看</a>
-            </li>
-          </ul>
-        </div>
-        <div class="search_con">
-          <ul>
-            <li>1</li>
-            <li>
-              <div class="imgs">
-
-              </div>
-            </li>
-            <li>
-              1748594033
-            </li>
-            <li>
-              第1类
-            </li>
-            <li>
-              黄灵支护
-            </li>
-            <li>
-              张久雨
-            </li>
-            <li>
-              <a href="">点击查看</a>
-            </li>
-          </ul>
-        </div>
-        <div class="search_con">
-          <ul>
-            <li>1</li>
-            <li>
-              <div class="imgs">
-
-              </div>
-            </li>
-            <li>
-              1748594033
-            </li>
-            <li>
-              第1类
-            </li>
-            <li>
-              黄灵支护
-            </li>
-            <li>
-              张久雨
-            </li>
-            <li>
-              <a href="">点击查看</a>
-            </li>
-          </ul>
-        </div>
-        <div class="page" >
-
+      </div>
+      <div class="hint">
+        <div class="login_msg">
+          <p ng-bind="msg"></p>
         </div>
       </div>
     </div>

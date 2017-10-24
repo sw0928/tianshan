@@ -30,7 +30,7 @@ var app=angular.module('app',['ng', 'ngRoute', 'ngAnimate','ngTouch','ngCookies'
             templateUrl: './views/main/other.html',
             controller: 'other'
         })
-        .when('/search',{
+        .when('/search/:total/:type/:key',{
             templateUrl: './views/main/search.html',
             controller: 'search'
         })
@@ -38,7 +38,7 @@ var app=angular.module('app',['ng', 'ngRoute', 'ngAnimate','ngTouch','ngCookies'
             templateUrl: './views/main/message.html',
             controller: 'message'
         })
-        .when('/trad_detail',{
+        .when('/trad_detail/:cls/:key',{
             templateUrl: './views/main/trademarkDetail.html',
             controller: 'trademarkDetail'
         })

@@ -30,7 +30,7 @@
               <p specification_id="{{item.specification_id}}">{{item.case_type}}</p>
             </li>
             <li>
-             <p >{{item.service_type}}<br>{{item.service_type}}</p>
+             <p >{{item.service_type}}</p>
             </li>
             <li>
             <p>¥ {{item.goods_price}}／个</p>
@@ -58,7 +58,11 @@
           </div>
           <input class="btn" order_id="" type="submit" name="" value="立即申请" ng-click="apply_for()">
         </div>
-        
+        <div class="hint">
+          <div class="login_msg">
+            <p ng-bind="msg"></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
